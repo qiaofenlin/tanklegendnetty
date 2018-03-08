@@ -8,8 +8,8 @@
 <version>0.0.1-SNAPSHOT</version>
 <packaging>jar</packaging>
 
-<name>demonettyandspringboot</name>
-<description>Demo project for Spring Boot</description>
+<name>tanklegendnetty</name>
+<description>tanklegendnetty project for loving player.</description>
 
 <parent>
     <groupId>org.springframework.boot</groupId>

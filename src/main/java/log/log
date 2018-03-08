@@ -25,3 +25,9 @@ CREATE TABLE user_map_list
     map_id VARCHAR(32)
 );
 -----------------------------------------------------------------------------------------
+CREATE TABLE user_tank_code_info
+(
+    id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    user_id INT NOT NULL,
+    code VARCHAR(640) NOT NULL
+);

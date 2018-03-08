@@ -1,4 +1,4 @@
-package temp;
+package dao.CommonMap;
 
 /**
  * @Created by  qiao

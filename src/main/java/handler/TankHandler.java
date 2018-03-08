@@ -7,6 +7,7 @@ import dao.CommonRepertoryEqupment.CommonRepertoryEqupmentEngine;
 import dao.CommonRepertoryEqupment.CommonRepertoryEqupmentTurret;
 import dao.CommonRepertoryEqupment.CommonRepertoryEqupmentWhell;
 import dao.JsonKeyword;
+import dao.UserPlayInfo;
 import dao.UserTankInfo;
 import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandlerAdapter;
@@ -21,9 +22,10 @@ import java.sql.SQLException;
 
 public class TankHandler extends ChannelHandlerAdapter {
     private static Logger logger = Logger.getLogger(TankHandler.class.getName());
+    private  UserPlayInfo userPlayInfo;
     UserTankInfo userTankInfo = new UserTankInfo();
 
-    public TankHandler() {
+    public TankHandler(UserPlayInfo userPlayInfo) {this.userPlayInfo=userPlayInfo;
     }
 
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws JSONException, UnsupportedEncodingException {

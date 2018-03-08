@@ -6,6 +6,7 @@ import com.alibaba.fastjson.serializer.SerializerFeature;
 import dao.CommonMap.MapLoad;
 import dao.JsonKeyword;
 import dao.UserMapInfo;
+import dao.UserPlayInfo;
 import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandlerAdapter;
 import io.netty.channel.ChannelHandlerContext;
@@ -21,12 +22,16 @@ import java.util.*;
 import static dao.JsonKeyword.*;
 
 public class MapHandler extends ChannelHandlerAdapter {
-    private static Logger logger = Logger.getLogger(TankHandler.class.getName());
+    private static Logger logger = Logger.getLogger(MapHandler.class.getName());
+    private UserPlayInfo userPlayInfo;
 
-    UserMapInfo userMapInfo=new UserMapInfo();
-    MapLoad mapLoad =new MapLoad();
+    private UserMapInfo userMapInfo=new UserMapInfo();
+    private MapLoad mapLoad =new MapLoad();
     private static List mapInfoArrayList=new ArrayList<>(MAXNUMBMAP);
 
+    public MapHandler(UserPlayInfo userPlayInfo) {
+        this.userPlayInfo = userPlayInfo;
+    }
 
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws JSONException, UnsupportedEncodingException {
         JSONObject body = (JSONObject) msg;

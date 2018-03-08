@@ -3,6 +3,7 @@ package server;
 
 import config.Configurator;
 import config.Log4JConfig;
+import dao.UserPlayInfo;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelOption;
@@ -14,9 +15,9 @@ import io.netty.channel.socket.nio.NioServerSocketChannel;
 public class PSServer {
     private int port;
     private String host;
+    private UserPlayInfo userPlayInfo;
 
-    private PSServer(){
-
+    private PSServer() {
     }
 
     private void init() throws Exception {
@@ -48,7 +49,7 @@ public class PSServer {
                     .channel(NioServerSocketChannel.class)
                     .option(ChannelOption.SO_BACKLOG, 102480)
                     .childOption(ChannelOption.TCP_NODELAY, true)
-                    .childHandler(new ChannelInitializerImp());
+                    .childHandler(new ChannelInitializerImp(userPlayInfo));
 
             ChannelFuture future = server.bind(host,port).sync();
 
@@ -60,7 +61,6 @@ public class PSServer {
     }
 
     public void close(){
-
     }
 }
 

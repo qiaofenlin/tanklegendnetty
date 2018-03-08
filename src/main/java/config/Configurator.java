@@ -1,6 +1,6 @@
 package config;
 
-import temp.ConfigKeyword;
+import dao.CommonMap.ConfigKeyword;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -18,6 +18,7 @@ public class Configurator {
     private static Map<String, String> configs;
 
     private static final String SERVERPATH = "/home/qiao/IdeaProjects/tanklegendnetty/src/main/resources/tanklegendNettyServer.properties";
+
     static {
         configs = new ConcurrentHashMap();
     }

@@ -1,0 +1,65 @@
+package dao;
+
+/**
+ * @Created by  qiao
+ * @date 18-3-8 下午9:24
+ */
+
+public class UserPlayInfo {
+    private UserTankInfo userTankInfo;
+    private UserTankCode userTankCode;
+    private UserMapInfo userMapInfo;
+
+    public UserTankInfo getUserTankInfo() {
+        return userTankInfo;
+    }
+
+    public void setUserTankInfo(UserTankInfo userTankInfo) {
+        this.userTankInfo = userTankInfo;
+    }
+
+    public UserTankCode getUserTankCode() {
+        return userTankCode;
+    }
+
+    public void setUserTankCode(UserTankCode userTankCode) {
+        this.userTankCode = userTankCode;
+    }
+
+    public UserMapInfo getUserMapInfo() {
+        return userMapInfo;
+    }
+
+    public void setUserMapInfo(UserMapInfo userMapInfo) {
+        this.userMapInfo = userMapInfo;
+    }
+
+    @Override
+    public String toString() {
+        return "UserPlayInfo{" +
+                "userTankInfo=" + userTankInfo +
+                ", userTankCode=" + userTankCode +
+                ", userMapInfo=" + userMapInfo +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        UserPlayInfo that = (UserPlayInfo) o;
+
+        if (userTankInfo != null ? !userTankInfo.equals(that.userTankInfo) : that.userTankInfo != null) return false;
+        if (userTankCode != null ? !userTankCode.equals(that.userTankCode) : that.userTankCode != null) return false;
+        return userMapInfo != null ? userMapInfo.equals(that.userMapInfo) : that.userMapInfo == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = userTankInfo != null ? userTankInfo.hashCode() : 0;
+        result = 31 * result + (userTankCode != null ? userTankCode.hashCode() : 0);
+        result = 31 * result + (userMapInfo != null ? userMapInfo.hashCode() : 0);
+        return result;
+    }
+}

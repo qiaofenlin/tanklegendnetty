@@ -4,6 +4,7 @@ package handler;
 import com.alibaba.fastjson.JSONException;
 import com.alibaba.fastjson.JSONObject;
 import dao.User;
+import dao.UserPlayInfo;
 import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandlerAdapter;
 import io.netty.channel.ChannelHandlerContext;
@@ -23,11 +24,12 @@ import java.util.concurrent.locks.ReentrantLock;
 public class LoginHandler extends ChannelHandlerAdapter {
     private static Logger logger = Logger.getLogger(LoginHandler.class.getName());
     private ReentrantLock lock = new ReentrantLock();
+    private UserPlayInfo userPlayInfo;
     /*查看访问了几次*/
     private static int i = 0;
     private static User user;
 
-    public LoginHandler() {
+    public LoginHandler(UserPlayInfo userPlayInfo) {this.userPlayInfo=userPlayInfo;
     }
 
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws JSONException, UnsupportedEncodingException {
