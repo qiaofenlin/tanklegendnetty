@@ -6,9 +6,10 @@ package dao.CommonMap;
  */
 
 public class MapLoad {
+    private int user_id;
     private int id;
     private String type;
-    private String mapid;
+    private String map_id;
 
     public int getId() {
         return id;
@@ -26,40 +27,29 @@ public class MapLoad {
         this.type = type;
     }
 
-    public String getMapid() {
-        return mapid;
+    public String getMap_id() {
+        return map_id;
     }
 
-    public void setMapid(String mapid) {
-        this.mapid = mapid;
+    public void setMap_id(String map_id) {
+        this.map_id = map_id;
+    }
+
+    public int getUser_id() {
+        return user_id;
+    }
+
+    public void setUser_id(int user_id) {
+        this.user_id = user_id;
     }
 
     @Override
     public String toString() {
         return "MapLoad{" +
-                "id=" + id +
+                "user_id=" + user_id +
+                ", id=" + id +
                 ", type='" + type + '\'' +
-                ", mapid='" + mapid + '\'' +
+                ", map_id='" + map_id + '\'' +
                 '}';
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        MapLoad mapLoad = (MapLoad) o;
-
-        if (id != mapLoad.id) return false;
-        if (type != null ? !type.equals(mapLoad.type) : mapLoad.type != null) return false;
-        return mapid != null ? mapid.equals(mapLoad.mapid) : mapLoad.mapid == null;
-    }
-
-    @Override
-    public int hashCode() {
-        int result = id;
-        result = 31 * result + (type != null ? type.hashCode() : 0);
-        result = 31 * result + (mapid != null ? mapid.hashCode() : 0);
-        return result;
     }
 }

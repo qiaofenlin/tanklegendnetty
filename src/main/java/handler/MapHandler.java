@@ -15,6 +15,7 @@ import utils.C3P0Utils;
 
 
 import java.io.UnsupportedEncodingException;
+import java.sql.SQLException;
 import java.util.*;
 
 import static dao.JsonKeyword.*;
@@ -37,25 +38,10 @@ public class MapHandler extends ChannelHandlerAdapter {
             String js =JSONObject.toJSONString(mapinfoid1, SerializerFeature.WriteClassName);
             mapInfoArrayList =JSONObject.parseArray(js,MapLoad.class);
             for(int i = 0 ; i < mapInfoArrayList.size() ; i++) {
-                System.out.println(mapInfoArrayList.get(i));
+                System.out.println("==========================================");
+                System.out.println(mapInfoArrayList.get(i).toString());
             }
             userMapInfo.setMapLoads(mapInfoArrayList);
-
-            System.out.println("-----------------------------");
-            System.out.println(userMapInfo.toString());
-            System.out.println("-----------------------------");
-            /*数组转化为javabean*/
-            String str =mapInfoArrayList.get(1).toString();
-            MapLoad xxxx = JSON.parseObject(str, MapLoad.class);
-            System.out.println(xxxx.toString()+"------");
-            System.out.println("-----------------------------");
-//            Iterator i = userMapInfo.getMapLoads().iterator();
-//            while (i.hasNext()) {
-//                System.out.println(i.next());
-//            }
-//            MapLoad mapLoads1=JSONObject.parseObject(mapInfoArrayList.get(0),new TypeReference<MapLoad>());
-
-
             logger.info(userMapInfo.toString() + "访问后台返回值===>MapHandler:channelRead");
             ctx.writeAndFlush(userMapInfo.toString()).addListener(ChannelFutureListener.CLOSE);
             addUserMapInfo();
@@ -68,40 +54,31 @@ public class MapHandler extends ChannelHandlerAdapter {
 
     public void addUserMapInfo() {
         int rows = 0;
-//        try {
             QueryRunner qr = new QueryRunner(C3P0Utils.getDataSource());
+            String sql=null;
+            MapLoad mapLoadone=null;
             for(int i=0;i<mapInfoArrayList.size();i++) {
-                String sql = "insert into user_map_list values(null,?,?,?)";
-//                JSONObject jsonObject = (JSONObject)mapInfoArrayList.get(1);
-//                System.out.println("/////////////+"+jsonObject.toString());
-//                System.out.println(mapInfoArrayList.get(1));
+                try {
+                    sql = "insert into user_map_list values(null,?,?,?,?)";
+                    /*数组转化为javabean*/
+                    String str = mapInfoArrayList.get(i).toString();
+                    mapLoadone = JSON.parseObject(str, MapLoad.class);
+                    mapLoadone.setUser_id(userMapInfo.getUser_id());
+                    System.out.println("---------------+"+mapLoadone.toString());
+                    Object[] params = {mapLoadone.getId(),mapLoadone.getUser_id(),  mapLoadone.getType(), mapLoadone.getMap_id()};
 
-
-// mapInfoArrayList=userMapInfo.getMapLoads();
-//                mapLoad =mapInfoArrayList.get(i);
-//                userMapInfo.getMapLoads().get(i).getType(),userMapInfo.getMapLoads().get(i).getMapid()
-//                MapLoad mapLoad1 =new MapLoad();
-//                mapLoad1 =JSONObject.parseObject(String.valueOf(mapInfoArrayList.get(1)),MapLoad.class);
-//                Object json=JSONObject.toJavaObject((JSON) mapInfoArrayList,MapLoad.class);
-//                System.out.println("666666666666666666666+"+mapLoad1.toString());
-//                System.out.println(userMapInfo.getUser_id()+"\t"+mapInfoArrayList.get(i).getType()+"\t"+mapInfoArrayList.get(i).getMapid());
-//                Object[] params = {userMapInfo.getUser_id(),mapLoad.getType(),mapLoad.getMapid()};
-//                rows = qr.update(sql, params);
+                    rows = qr.update(sql, params);
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                } finally {
+                    if (rows > 0) {
+                        logger.info("user_map_list添加成功");
+                    } else {
+                        System.out.println("添加失败!");
+                        logger.warn("user_map_list添加失败");
+                    }
+                }
             }
-//            String sql = "insert into user_map_list values(null,?,?,?)";
-//            Object[] params = {};
-//            rows = qr.update(sql, params);
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//        }finally {
-            if (rows > 0) {
-                logger.info("user_tank_info添加成功");
-            } else {
-                System.out.println("添加失败!");
-                logger.warn("user_tank_info添加失败");
-            }
-//        }
-
     }
 
 
