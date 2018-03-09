@@ -15,7 +15,7 @@ import io.netty.channel.socket.nio.NioServerSocketChannel;
 public class PSServer {
     private int port;
     private String host;
-    private UserPlayInfo userPlayInfo;
+    private  UserPlayInfo userPlayInfo;
 
     private PSServer() {
     }
@@ -41,6 +41,7 @@ public class PSServer {
 
     public void run(){
         EventLoopGroup bossgroup = new NioEventLoopGroup();
+
         EventLoopGroup workgroup = new NioEventLoopGroup();
         try {
             ServerBootstrap server = new ServerBootstrap();
@@ -61,6 +62,14 @@ public class PSServer {
     }
 
     public void close(){
+    }
+
+    public UserPlayInfo getUserPlayInfo() {
+        return userPlayInfo;
+    }
+
+    public void setUserPlayInfo(UserPlayInfo userPlayInfo) {
+        this.userPlayInfo = userPlayInfo;
     }
 }
 

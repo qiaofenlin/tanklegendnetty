@@ -4,7 +4,18 @@
  */
 
 public class aaa {
-    private int a;
+    private static int a;
+
+    public int getA() {
+        return a;
+    }
+
+    public void setA(int a) {
+        this.a = a;
+    }
+
+    public void aaa(int a){
 
 
+    }
 }

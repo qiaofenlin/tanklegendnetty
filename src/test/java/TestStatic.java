@@ -4,6 +4,7 @@
  */
 
 public class TestStatic {
+    private  int a;
     public static void main(String[] args) {
 
     }
