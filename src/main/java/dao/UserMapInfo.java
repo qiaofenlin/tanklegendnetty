@@ -43,4 +43,22 @@ public class UserMapInfo  extends CommonMap{
                 ", mapLoads=" + mapLoads +
                 '}';
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        UserMapInfo that = (UserMapInfo) o;
+
+        if (user_id != that.user_id) return false;
+        return mapLoads != null ? mapLoads.equals(that.mapLoads) : that.mapLoads == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = user_id;
+        result = 31 * result + (mapLoads != null ? mapLoads.hashCode() : 0);
+        return result;
+    }
 }

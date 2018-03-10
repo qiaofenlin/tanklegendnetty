@@ -6,9 +6,22 @@ package dao;
  */
 
 public class UserPlayInfo {
+    private int user_id;
     private UserTankInfo userTankInfo;
     private UserTankCode userTankCode;
     private UserMapInfo userMapInfo;
+
+    public UserPlayInfo(Integer user_id) {
+        this.user_id=user_id;
+    }
+
+    public int getUser_id() {
+        return user_id;
+    }
+
+    public void setUser_id(int user_id) {
+        this.user_id = user_id;
+    }
 
     public UserTankInfo getUserTankInfo() {
         return userTankInfo;

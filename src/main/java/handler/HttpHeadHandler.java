@@ -8,6 +8,7 @@ import io.netty.handler.codec.http.FullHttpResponse;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import io.netty.handler.codec.http.HttpVersion;
 import org.apache.log4j.Logger;
+import server.PSServer;
 
 import java.io.UnsupportedEncodingException;
 
@@ -24,6 +25,9 @@ public class HttpHeadHandler extends ChannelHandlerAdapter {
         response.headers().set(CONTENT_TYPE,"text/html;charset=UTF-8");
         response.headers().set(CONTENT_LENGTH,body.getBytes("UTF-8").length+"");
         response.content().writeBytes(body.getBytes("UTF-8"));
+        System.out.println("999999999999999999999999999999");
+        System.out.println(PSServer.userPlayInfo.toString());
+        System.out.println("999999999999999999999999999999");
         ctx.write(response);
     }
 }

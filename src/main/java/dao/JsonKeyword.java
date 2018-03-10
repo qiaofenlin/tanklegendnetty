@@ -20,7 +20,7 @@ public class JsonKeyword {
     public static final String MAPINFOID="mapinfoid";/*json数据中传出的map的统一集合.*/
 
     public static final String TANKCODE="tankcode";
-
+    public static final String TREADEUSERINFO="trade_userinfo";
 
 
 

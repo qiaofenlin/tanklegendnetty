@@ -12,10 +12,12 @@ import io.netty.channel.ChannelHandlerAdapter;
 import io.netty.channel.ChannelHandlerContext;
 import org.apache.commons.dbutils.QueryRunner;
 import org.apache.log4j.Logger;
+import server.PSServer;
 import utils.C3P0Utils;
 
 
 import java.io.UnsupportedEncodingException;
+import java.security.spec.PSSParameterSpec;
 import java.sql.SQLException;
 import java.util.*;
 
@@ -23,14 +25,11 @@ import static dao.JsonKeyword.*;
 
 public class MapHandler extends ChannelHandlerAdapter {
     private static Logger logger = Logger.getLogger(MapHandler.class.getName());
-    private UserPlayInfo userPlayInfo;
-
     private UserMapInfo userMapInfo=new UserMapInfo();
     private MapLoad mapLoad =new MapLoad();
     private static List mapInfoArrayList=new ArrayList<>(MAXNUMBMAP);
 
-    public MapHandler(UserPlayInfo userPlayInfo) {
-        this.userPlayInfo = userPlayInfo;
+    public MapHandler() {
     }
 
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws JSONException, UnsupportedEncodingException {
@@ -50,6 +49,9 @@ public class MapHandler extends ChannelHandlerAdapter {
             logger.info(userMapInfo.toString() + "访问后台返回值===>MapHandler:channelRead");
             ctx.writeAndFlush(userMapInfo.toString()).addListener(ChannelFutureListener.CLOSE);
             addUserMapInfo();
+            PSServer.userPlayInfo.setUserMapInfo(userMapInfo);
+            System.out.println("/////////////////////userTankCode"+PSServer.userPlayInfo.toString());
+
         } else {
             ctx.fireChannelRead(msg);
         }

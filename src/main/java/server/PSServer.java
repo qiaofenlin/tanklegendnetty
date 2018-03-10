@@ -15,7 +15,7 @@ import io.netty.channel.socket.nio.NioServerSocketChannel;
 public class PSServer {
     private int port;
     private String host;
-    private  UserPlayInfo userPlayInfo;
+    public static UserPlayInfo userPlayInfo =new UserPlayInfo();
 
     private PSServer() {
     }

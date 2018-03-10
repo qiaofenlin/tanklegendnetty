@@ -15,6 +15,7 @@ import io.netty.channel.ChannelHandlerContext;
 import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.handlers.BeanHandler;
 import org.apache.log4j.Logger;
+import server.PSServer;
 import utils.C3P0Utils;
 
 import java.io.UnsupportedEncodingException;
@@ -22,10 +23,9 @@ import java.sql.SQLException;
 
 public class TankHandler extends ChannelHandlerAdapter {
     private static Logger logger = Logger.getLogger(TankHandler.class.getName());
-    private  UserPlayInfo userPlayInfo;
-    UserTankInfo userTankInfo = new UserTankInfo();
+    private UserTankInfo userTankInfo =new UserTankInfo();
 
-    public TankHandler(UserPlayInfo userPlayInfo) {this.userPlayInfo=userPlayInfo;
+    public TankHandler() {
     }
 
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws JSONException, UnsupportedEncodingException {
@@ -39,7 +39,8 @@ public class TankHandler extends ChannelHandlerAdapter {
             logger.info(userTankInfo.toString() + "访问后台返回值===>TankHandler:channelRead");
             ctx.writeAndFlush(userTankInfo.toString()).addListener(ChannelFutureListener.CLOSE);
             addUserTankInfo();
-
+            PSServer.userPlayInfo.setUserTankInfo(userTankInfo);
+            System.out.println("/////////////////////userTankCode"+PSServer.userPlayInfo.toString());
         } else {
             ctx.fireChannelRead(msg);
         }

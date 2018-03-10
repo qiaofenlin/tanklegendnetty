@@ -108,4 +108,38 @@ public class UserTankInfo {
                 ", tankSpeed=" + tankSpeed +
                 '}';
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        UserTankInfo that = (UserTankInfo) o;
+
+        if (user_id != that.user_id) return false;
+        if (user_tank_info_id != that.user_tank_info_id) return false;
+        if (equpment_turret_id != that.equpment_turret_id) return false;
+        if (equpment_whell_id != that.equpment_whell_id) return false;
+        if (eupment_engin_id != that.eupment_engin_id) return false;
+        if (equpment_armour_id != that.equpment_armour_id) return false;
+        if (HP != that.HP) return false;
+        if (fire != that.fire) return false;
+        if (shotsSpeed != that.shotsSpeed) return false;
+        return tankSpeed == that.tankSpeed;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = user_id;
+        result = 31 * result + user_tank_info_id;
+        result = 31 * result + equpment_turret_id;
+        result = 31 * result + equpment_whell_id;
+        result = 31 * result + eupment_engin_id;
+        result = 31 * result + equpment_armour_id;
+        result = 31 * result + HP;
+        result = 31 * result + fire;
+        result = 31 * result + shotsSpeed;
+        result = 31 * result + tankSpeed;
+        return result;
+    }
 }

@@ -42,4 +42,24 @@ public class UserTankCode {
                 ", code='" + code + '\'' +
                 '}';
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        UserTankCode that = (UserTankCode) o;
+
+        if (id != that.id) return false;
+        if (user_id != that.user_id) return false;
+        return code != null ? code.equals(that.code) : that.code == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id;
+        result = 31 * result + user_id;
+        result = 31 * result + (code != null ? code.hashCode() : 0);
+        return result;
+    }
 }
