@@ -1,9 +1,0 @@
-1.ConcurrentHashMap   https://my.oschina.net/mononite/blog/144329?p=1
-
-2.compare and set   http://www.blogjava.net/mstar/archive/2013/04/24/398351.html
-    Atomic 中底层使用到了compareAndSet() 而它的函数体中包含compareAndSwapXXX()方法,
-    该方法是通过JNI实现的.也就是说是通过JNI调用操作系统的原生程序cmpxchg方法,该汇编是与操
-    作系统有关,同时也和cpu有关. 也就是说CAS的原子性实际上是有CPU实现的.其实在这一点上还是
-    有排它锁的.只是与Synchronized相比,使用的时间少很多.所以多线程情况下性能会好很多.
-
-3.

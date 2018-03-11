@@ -6,7 +6,7 @@ import com.alibaba.fastjson.serializer.SerializerFeature;
 import dao.CommonMap.MapLoad;
 import dao.JsonKeyword;
 import dao.UserMapInfo;
-import dao.UserPlayInfo;
+import handler.service.TradeUserInfoService;
 import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandlerAdapter;
 import io.netty.channel.ChannelHandlerContext;
@@ -17,14 +17,15 @@ import utils.C3P0Utils;
 
 
 import java.io.UnsupportedEncodingException;
-import java.security.spec.PSSParameterSpec;
 import java.sql.SQLException;
 import java.util.*;
+import java.util.concurrent.locks.ReentrantLock;
 
 import static dao.JsonKeyword.*;
 
 public class MapHandler extends ChannelHandlerAdapter {
     private static Logger logger = Logger.getLogger(MapHandler.class.getName());
+    private ReentrantLock lock = new ReentrantLock();
     private UserMapInfo userMapInfo=new UserMapInfo();
     private MapLoad mapLoad =new MapLoad();
     private static List mapInfoArrayList=new ArrayList<>(MAXNUMBMAP);
@@ -49,9 +50,14 @@ public class MapHandler extends ChannelHandlerAdapter {
             logger.info(userMapInfo.toString() + "访问后台返回值===>MapHandler:channelRead");
             ctx.writeAndFlush(userMapInfo.toString()).addListener(ChannelFutureListener.CLOSE);
             addUserMapInfo();
+            lock.lock();
+            PSServer.userPlayInfo.setUser_id(userMapInfo.getUser_id());
             PSServer.userPlayInfo.setUserMapInfo(userMapInfo);
-            System.out.println("/////////////////////userTankCode"+PSServer.userPlayInfo.toString());
-
+            TradeUserInfoService tradeUserInfoService = new TradeUserInfoService(JsonKeyword.MAPINFO);
+            tradeUserInfoService.put(userMapInfo.getUser_id());
+            lock.unlock();
+//            PSServer.executor.submit(new Thread(new TradeUserInfoRunnable(PSServer.countDownLatch,JsonKeyword.MAPINFO)));
+//            System.out.println("/////////////////////userTankCode"+PSServer.userPlayInfo.toString());
         } else {
             ctx.fireChannelRead(msg);
         }

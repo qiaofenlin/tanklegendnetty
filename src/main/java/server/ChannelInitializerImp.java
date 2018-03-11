@@ -27,6 +27,7 @@ public class ChannelInitializerImp extends ChannelInitializer<NioSocketChannel> 
         channel.pipeline().addLast(new TankHandler());//inbound outbound
         channel.pipeline().addLast(new MapHandler());//inbound outbound
         channel.pipeline().addLast(new TankCodeHandler());//inbound outbound
+        channel.pipeline().addLast(new TradeUserInfoGetHandler());//inbound outbound
 
     }
 }

@@ -15,6 +15,10 @@ public class UserPlayInfo {
         this.user_id=user_id;
     }
 
+    public UserPlayInfo() {
+
+    }
+
     public int getUser_id() {
         return user_id;
     }

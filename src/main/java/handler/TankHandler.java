@@ -9,6 +9,7 @@ import dao.CommonRepertoryEqupment.CommonRepertoryEqupmentWhell;
 import dao.JsonKeyword;
 import dao.UserPlayInfo;
 import dao.UserTankInfo;
+import handler.service.TradeUserInfoService;
 import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandlerAdapter;
 import io.netty.channel.ChannelHandlerContext;
@@ -20,11 +21,12 @@ import utils.C3P0Utils;
 
 import java.io.UnsupportedEncodingException;
 import java.sql.SQLException;
+import java.util.concurrent.locks.ReentrantLock;
 
 public class TankHandler extends ChannelHandlerAdapter {
     private static Logger logger = Logger.getLogger(TankHandler.class.getName());
     private UserTankInfo userTankInfo =new UserTankInfo();
-
+    private ReentrantLock lock = new ReentrantLock();
     public TankHandler() {
     }
 
@@ -39,8 +41,14 @@ public class TankHandler extends ChannelHandlerAdapter {
             logger.info(userTankInfo.toString() + "访问后台返回值===>TankHandler:channelRead");
             ctx.writeAndFlush(userTankInfo.toString()).addListener(ChannelFutureListener.CLOSE);
             addUserTankInfo();
+            lock.lock();
+            PSServer.userPlayInfo.setUser_id(userTankInfo.getUser_id());
             PSServer.userPlayInfo.setUserTankInfo(userTankInfo);
-            System.out.println("/////////////////////userTankCode"+PSServer.userPlayInfo.toString());
+            TradeUserInfoService tradeUserInfoService = new TradeUserInfoService(JsonKeyword.TANKCODE);
+            tradeUserInfoService.put(userTankInfo.getUser_id());
+            lock.unlock();
+
+//            System.out.println("/////////////////////userTankCode"+PSServer.userPlayInfo.toString());
         } else {
             ctx.fireChannelRead(msg);
         }

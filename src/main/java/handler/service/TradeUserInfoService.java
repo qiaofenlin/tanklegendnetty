@@ -1,10 +1,13 @@
 package handler.service;
 
+import dao.JsonKeyword;
 import dao.UserPlayInfo;
+import org.apache.log4j.Logger;
+import server.PSServer;
 
-
-import java.util.Map;
 import java.util.concurrent.*;
+
+import static java.lang.String.valueOf;
 
 
 /**
@@ -13,45 +16,63 @@ import java.util.concurrent.*;
  */
 
 public class TradeUserInfoService {
+    private static Logger logger =Logger.getLogger(TradeUserInfoService.class);
+
     private UserPlayInfo userPlayInfo;
 
-    private final ConcurrentMap<Integer, Future<UserPlayInfo>> cache = (ConcurrentMap)new ConcurrentHashMap<>();
+    private String type;
 
-    public UserPlayInfo get(final Integer key) {
-        Future<UserPlayInfo> future = cache.get(key);
-        if (future == null) {
-            Callable<UserPlayInfo> callable = new Callable<UserPlayInfo>() {
-                @Override
-                public UserPlayInfo call() throws Exception {
-                    return new UserPlayInfo(key);
-                }
-            };
-            FutureTask<UserPlayInfo> task = new FutureTask<>(callable);
+    private int user_id;
 
-            future = cache.putIfAbsent(key, task);
-            if (future == null) {
-                future = task;
-                task.run();
-            }
-        }
+    public  final ConcurrentHashMap<Integer, UserPlayInfo> cache =new ConcurrentHashMap<>();
 
-        try {
-            return future.get();
-        } catch (Exception e) {
-            cache.remove(key);
-            throw new RuntimeException(e);
+    public TradeUserInfoService() {
+    }
+
+    public TradeUserInfoService(String type) {
+        this.type = type;
+    }
+
+    public String put(final Integer key) {
+        //获得接收的类的类型
+        //判断是那个user_id和三种信息.
+
+    if(null!=type){
+        switch (type){
+            case JsonKeyword.MAPINFO :
+                logger.info("接受的信息为:"+type+", 接受完毕!!   "+ PSServer.userPlayInfo.toString());
+                break;
+            case JsonKeyword.TANKINFO:
+                logger.info("接受的信息为:"+type+", 接受完毕!!   "+ PSServer.userPlayInfo.toString());
+                break;
+            case JsonKeyword.TANKCODE:
+                logger.info("接受的信息为:"+type+", 接受完毕!!   "+ PSServer.userPlayInfo.toString());
+                break;
         }
     }
 
-//    public long increase(String word) {
-//        AtomicLong number = wordCounts.get(word);
-//        if (number == null) {
-//            AtomicLong newNumber = new AtomicLong(0);
-//            number = wordCounts.putIfAbsent(word, newNumber);
-//            if (number == null) {
-//                number = newNumber;
-//            }
+        //判断UserPlayInfo是否全都收集,如果收集齐,则插入到Hashmap中.
+//        if(PSServer.userPlayInfo.getUserTankCode().getUser_id() == PSServer.userPlayInfo.getUserMapInfo().getUser_id() && PSServer.userPlayInfo.getUserTankCode().getUser_id() == PSServer.userPlayInfo.getUserTankInfo().getUser_id()
+//                && PSServer.userPlayInfo.getUserTankCode().getUser_id() == PSServer.userPlayInfo.getUserTankInfo().getUser_id()){
+//
+//
+//
 //        }
-//        return number.incrementAndGet();
-//    }
+
+        if (null != PSServer.userPlayInfo.getUserTankCode() && null != PSServer.userPlayInfo.getUserTankInfo() && null != PSServer.userPlayInfo.getUserMapInfo()) {
+            cache.put(key,PSServer.userPlayInfo);
+            System.out.println("################################success");
+            return "success";
+        }
+        System.out.println("################################false");
+
+        return "false";
+    }
+
+    public void get(final Integer key){
+        System.out.println("################################cache.toString");
+        System.out.println(cache.size()+"   11111111111");
+        System.out.println("\t"+cache.get(key).toString());
+        System.out.println("################################cache.toString");
+    }
 }

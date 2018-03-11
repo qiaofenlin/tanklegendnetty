@@ -11,11 +11,16 @@ import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 
+import java.util.concurrent.*;
+
 
 public class PSServer {
     private int port;
     private String host;
     public static UserPlayInfo userPlayInfo =new UserPlayInfo();
+    public static CountDownLatch countDownLatch = new CountDownLatch(3);
+    public static ExecutorService executor = Executors.newFixedThreadPool(3);
+
 
     private PSServer() {
     }
