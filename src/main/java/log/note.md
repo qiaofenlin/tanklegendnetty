@@ -50,3 +50,6 @@
     compareAndSet（）和getAndIncrement（）等方法都使用了Unsafe类的CAS操作。
 
 # 3.[netty断电重连](http://blog.csdn.net/zero__007/article/details/74355240)
+
+# 4.[redis的学习](https://blog.csdn.net/weixin_37998647/article/details/79113855 )
+	 

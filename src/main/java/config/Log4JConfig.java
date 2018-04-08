@@ -1,7 +1,5 @@
 package config;
 
-
-
 import java.io.File;
 import org.apache.log4j.PropertyConfigurator;
 

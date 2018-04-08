@@ -7,6 +7,7 @@ public class JsonKeyword {
     public static final String USERNAME = "username";
     public static final String PASSWORD = "password";
     public static final String USERID = "userId";
+    public static final String SESSION = "session";
 
     public static final String HP = "HP";
     public static final String FIRE = "fire";
@@ -31,7 +32,7 @@ public class JsonKeyword {
     public static final String USERCOUNT = "user_count";
     public static final String USER = "user";
 
-
+    public static final String URL = "/home/qiao/IdeaProjects/tanklegendnetty/src/main/java/handler";
 
 
 

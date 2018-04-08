@@ -15,12 +15,14 @@ import io.netty.channel.ChannelHandlerContext;
 import org.apache.log4j.Logger;
 import server.PSServer;
 import utils.C3P0Utils;
+import utils.jedis.JedisClient;
 
 import java.io.UnsupportedEncodingException;
 import java.util.concurrent.locks.ReentrantLock;
 
 public class TankCodeHandler extends ChannelHandlerAdapter {
     private static Logger logger = Logger.getLogger(TankCodeHandler.class.getName());
+    private JedisClient jedisClient;
     private ReentrantLock lock = new ReentrantLock();
     private UserTankCode userTankCode =new UserTankCode();
     private UserPlayInfo userPlayInfo;
@@ -49,6 +51,14 @@ public class TankCodeHandler extends ChannelHandlerAdapter {
             tradeUserInfoService.put(userTankCode.getUser_id());
             lock.unlock();
 //            System.out.println("/////////////////////userTankCode"+PSServer.userPlayInfo.toString());
+           /*查询缓存*/
+//            try {
+//                jedisClient.hset("CONTENT_LIST",)
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            }
+
+
         } else {
             ctx.fireChannelRead(msg);
         }

@@ -1,65 +1,61 @@
 package handler;
 
-
 import com.alibaba.fastjson.JSONException;
 import com.alibaba.fastjson.JSONObject;
+import dao.JsonKeyword;
 import dao.User;
 import dao.UserPlayInfo;
 import io.netty.channel.ChannelFutureListener;
-import io.netty.channel.ChannelHandlerAdapter;
 import io.netty.channel.ChannelHandlerContext;
 import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.handlers.BeanHandler;
 import org.apache.log4j.Logger;
-
-import dao.JsonKeyword;
 import redis.clients.jedis.exceptions.JedisConnectionException;
 import utils.C3P0Utils;
 
 import javax.servlet.http.Cookie;
 import java.io.UnsupportedEncodingException;
-import java.net.HttpCookie;
 import java.sql.SQLException;
 import java.util.concurrent.locks.ReentrantLock;
 
+/**
+ * @Created by  qiao
+ * @date 18-4-8 下午9:17
+ */
 
-public class LoginHandler extends ChannelHandlerAdapter {
+public class LoginService {
     private static Logger logger = Logger.getLogger(LoginHandler.class.getName());
     private ReentrantLock lock = new ReentrantLock();
     private UserPlayInfo userPlayInfo;
-    /*查看访问了几次*/
     private static int i = 0;
     private static User user;
 
-    public LoginHandler(UserPlayInfo userPlayInfo) {this.userPlayInfo=userPlayInfo;
+    public LoginService() {
     }
 
-    public void   channelRead(ChannelHandlerContext ctx, Object msg) throws JSONException, UnsupportedEncodingException {
-        JSONObject body = (JSONObject)msg;
+    public String  channelRead(JSONObject body) throws JSONException, UnsupportedEncodingException {
+//        JSONObject body = (JSONObject)msg;
+        System.out.println("开始LoginService 之旅!");
         String type = body.getString(JsonKeyword.TYPE);
-            if(type.equalsIgnoreCase(JsonKeyword.LOGIN)){
-                String username = body.getString(JsonKeyword.USERNAME);
-                String passwd = body.getString(JsonKeyword.PASSWORD);
-                String sessionid = null ;
-                Cookie info =new Cookie("user","aaaaaa");
-                info.setValue("aaaaaa");
-                String can = "0";
-                if(canLogin(username,passwd)){
-                    can = "1";
+        if(type.equalsIgnoreCase(JsonKeyword.LOGIN)){
+            String username = body.getString(JsonKeyword.USERNAME);
+            String passwd = body.getString(JsonKeyword.PASSWORD);
+            String sessionid = null ;
+            Cookie info =new Cookie("user","aaaaaa");
+            info.setValue("aaaaaa");
+            String can = "0";
+            if(canLogin(username,passwd)){
+                can = "1";
             }
-//            System.out.println("++++++++++++++++++++++++++++           "+ can);
-                logger.info(username+"访问后台返回值===>Loginhandler:channelRead"+can);
-                String aaa =can+", cookie" +info;
-                ctx.writeAndFlush(can+", cookie" +info).addListener(ChannelFutureListener.CLOSE);
-
-                lock.lock();
-                System.out.println(body+" :: "+(i++));
-                lock.unlock();
-//                return aaa;
-            }else {
-                ctx.fireChannelRead(msg);
-            }
-//            return null;
+            logger.info(username+"访问后台返回值===>Loginhandler:channelRead"+can);
+            String aaa =can+", cookie" +info;
+            lock.lock();
+            System.out.println(body+" :: "+(i++));
+            lock.unlock();
+                return aaa;
+        }
+        logger.warn("============>LoginService.channel has ERROR.  <============");
+            return "============>  ERROR !! <============";
     }
 
     private boolean canLogin(String username,String passwd){

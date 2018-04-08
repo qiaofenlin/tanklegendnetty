@@ -17,8 +17,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class Configurator {
     private static Map<String, String> configs;
 
-    private static final String SERVERPATH = "/home/qiao/IdeaProjects/tanklegendnetty/src/main/resources/tanklegendNettyServer.properties";
-
+    private static final String SERVERPATH= "/home/qiao/IdeaProjects/tanklegendnetty/src/main/resources/tanklegendNettyServer.properties";
     static {
         configs = new ConcurrentHashMap();
     }
@@ -69,5 +68,4 @@ public class Configurator {
         }
         return port;
     }
-
 }

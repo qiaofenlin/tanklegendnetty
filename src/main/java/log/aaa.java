@@ -1,3 +1,5 @@
+package log;
+
 /**
  * @Created by  qiao
  * @date 18-3-8 下午9:33
@@ -6,7 +8,7 @@
 public class aaa {
     private int a;
     private int b;
-
+    private  String ll ="aaa";
     public aaa() {
     }
 
@@ -26,11 +28,24 @@ public class aaa {
         this.b = b;
     }
 
-    public String toString(int aa) {
+    public String toString(String aa) {
         return "aaa{" +
                 "a=" + a +
                 ", b=" + b +
                 ", aa= "+ aa +
                 '}';
+    }
+
+
+    public boolean equals(String  o) {
+        if (o.equals(ll)){
+            return true;
+        }
+        return false;
+    }
+
+    public void dis(String aa){
+
+        System.out.println("11111" + aa);
     }
 }

@@ -53,7 +53,7 @@ public class PSServer {
 
             server.group(bossgroup, workgroup)
                     .channel(NioServerSocketChannel.class)
-                    .option(ChannelOption.SO_BACKLOG, 102480)
+                    .option(ChannelOption.SO_BACKLOG, 128)
                     .childOption(ChannelOption.TCP_NODELAY, true)
                     .childHandler(new ChannelInitializerImp(userPlayInfo));
 

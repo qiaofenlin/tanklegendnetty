@@ -1,19 +1,16 @@
 package handler;
 
+
 import io.netty.channel.ChannelHandlerAdapter;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelPromise;
-import io.netty.handler.codec.http.DefaultFullHttpResponse;
-import io.netty.handler.codec.http.FullHttpResponse;
-import io.netty.handler.codec.http.HttpResponseStatus;
-import io.netty.handler.codec.http.HttpVersion;
+import io.netty.handler.codec.http.*;
 import org.apache.log4j.Logger;
-import server.PSServer;
+
 
 import java.io.UnsupportedEncodingException;
 
-import static io.netty.handler.codec.stomp.StompHeaders.CONTENT_LENGTH;
-import static io.netty.handler.codec.stomp.StompHeaders.CONTENT_TYPE;
+import static io.netty.handler.codec.stomp.StompHeaders.*;
 
 
 public class HttpHeadHandler extends ChannelHandlerAdapter {
@@ -24,10 +21,19 @@ public class HttpHeadHandler extends ChannelHandlerAdapter {
         FullHttpResponse response = new DefaultFullHttpResponse(HttpVersion.HTTP_1_1, HttpResponseStatus.OK);
         response.headers().set(CONTENT_TYPE,"text/html;charset=UTF-8");
         response.headers().set(CONTENT_LENGTH,body.getBytes("UTF-8").length+"");
+        response.headers().set(MESSAGE_ID,"Cookie-123456");
+//        response.headers().set()
+//        response.headers().set(SESSION,"11");
+//        response.();
         response.content().writeBytes(body.getBytes("UTF-8"));
-        System.out.println("999999999999999999999999999999");
-        System.out.println(PSServer.userPlayInfo.toString());
-        System.out.println("999999999999999999999999999999");
+        String a=response.headers().toString();
+        String b =response.content().toString();
+        logger.info("=====>Print response.headers<=====");
+        System.out.println(a);
+        logger.info("=====>Print response.content<=====");
+        System.out.println(b);
+        logger.info("=====>Print HttpHeadHandler Left<=====");
         ctx.write(response);
     }
+
 }
