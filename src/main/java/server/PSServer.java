@@ -10,6 +10,7 @@ import io.netty.channel.ChannelOption;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
+import utils.TankJedisPool;
 
 import java.util.concurrent.*;
 
@@ -17,6 +18,7 @@ import java.util.concurrent.*;
 public class PSServer {
     private int port;
     private String host;
+    private TankJedisPool tankJedisPool;
     public static UserPlayInfo userPlayInfo =new UserPlayInfo();
     public static CountDownLatch countDownLatch = new CountDownLatch(3);
     public static ExecutorService executor = Executors.newFixedThreadPool(3);
@@ -30,6 +32,8 @@ public class PSServer {
         Log4JConfig.load();
         Thread listener = new Thread(new ConsoleListener());
         listener.start();
+        this.tankJedisPool =new TankJedisPool(Configurator.getJPWorkMaxNum(),Configurator.getJPWorkMinNum(),
+                Configurator.getJPHost(),Configurator.getJPPort());
     }
 
     public static PSServer newInstance() throws Exception {
@@ -55,7 +59,7 @@ public class PSServer {
                     .channel(NioServerSocketChannel.class)
                     .option(ChannelOption.SO_BACKLOG, 128)
                     .childOption(ChannelOption.TCP_NODELAY, true)
-                    .childHandler(new ChannelInitializerImp(userPlayInfo));
+                    .childHandler(new ChannelInitializerImp(tankJedisPool));
 
             ChannelFuture future = server.bind(host,port).sync();
 

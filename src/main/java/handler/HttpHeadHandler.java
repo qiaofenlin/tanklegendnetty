@@ -31,7 +31,7 @@ public class HttpHeadHandler extends ChannelHandlerAdapter {
         logger.info("=====>Print response.headers<=====");
         System.out.println(a);
         logger.info("=====>Print response.content<=====");
-        System.out.println(b);
+        System.out.println("this is :"+b);
         logger.info("=====>Print HttpHeadHandler Left<=====");
         ctx.write(response);
     }

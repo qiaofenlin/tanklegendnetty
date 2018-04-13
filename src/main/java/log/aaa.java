@@ -6,7 +6,7 @@ package log;
  */
 
 public class aaa {
-    private int a;
+    public int a =1;
     private int b;
     private  String ll ="aaa";
     public aaa() {
@@ -44,8 +44,8 @@ public class aaa {
         return false;
     }
 
-    public void dis(String aa){
+    public void dis(bbb b){
 
-        System.out.println("11111" + aa);
+        System.out.println("11111" + b.toString());
     }
 }

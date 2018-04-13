@@ -15,7 +15,7 @@ import io.netty.channel.ChannelHandlerContext;
 import org.apache.log4j.Logger;
 import server.PSServer;
 import utils.C3P0Utils;
-import utils.jedis.JedisClient;
+import utils.JedisClient;
 
 import java.io.UnsupportedEncodingException;
 import java.util.concurrent.locks.ReentrantLock;

@@ -4,6 +4,7 @@ package dao;
 public class JsonKeyword {
     public static final String TYPE = "type";
     public static final String LOGIN = "login";
+    public static final String USERS = "users";
     public static final String USERNAME = "username";
     public static final String PASSWORD = "password";
     public static final String USERID = "userId";
@@ -32,7 +33,7 @@ public class JsonKeyword {
     public static final String USERCOUNT = "user_count";
     public static final String USER = "user";
 
-    public static final String URL = "/home/qiao/IdeaProjects/tanklegendnetty/src/main/java/handler";
+
 
 
 
@@ -47,6 +48,7 @@ public class JsonKeyword {
     public static final String CHECKUSERNAME = "checkUsername";
     public static final String CHECKCODE = "checkcode";
     public static final String MOBILECHECKUSERNAME = "mobileCheckUsername";
+    public static final String REGIST ="regist" ;
 }
 
 

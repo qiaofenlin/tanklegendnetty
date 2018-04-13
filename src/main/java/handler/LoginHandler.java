@@ -34,7 +34,7 @@ public class LoginHandler extends ChannelHandlerAdapter {
     public LoginHandler(UserPlayInfo userPlayInfo) {this.userPlayInfo=userPlayInfo;
     }
 
-    public void   channelRead(ChannelHandlerContext ctx, Object msg) throws JSONException, UnsupportedEncodingException {
+    public void  channelRead(ChannelHandlerContext ctx, Object msg) throws JSONException, UnsupportedEncodingException {
         JSONObject body = (JSONObject)msg;
         String type = body.getString(JsonKeyword.TYPE);
             if(type.equalsIgnoreCase(JsonKeyword.LOGIN)){
@@ -44,22 +44,18 @@ public class LoginHandler extends ChannelHandlerAdapter {
                 Cookie info =new Cookie("user","aaaaaa");
                 info.setValue("aaaaaa");
                 String can = "0";
-                if(canLogin(username,passwd)){
-                    can = "1";
+                if(true){//canLogin(username,passwd)
+                    sessionid ="1234adafd";
+                    can = "username"+username +"sessionid: "+sessionid;
             }
-//            System.out.println("++++++++++++++++++++++++++++           "+ can);
                 logger.info(username+"访问后台返回值===>Loginhandler:channelRead"+can);
-                String aaa =can+", cookie" +info;
                 ctx.writeAndFlush(can+", cookie" +info).addListener(ChannelFutureListener.CLOSE);
-
                 lock.lock();
                 System.out.println(body+" :: "+(i++));
                 lock.unlock();
-//                return aaa;
             }else {
                 ctx.fireChannelRead(msg);
             }
-//            return null;
     }
 
     private boolean canLogin(String username,String passwd){

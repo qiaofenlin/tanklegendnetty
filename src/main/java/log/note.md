@@ -53,3 +53,19 @@
 
 # 4.[redis的学习](https://blog.csdn.net/weixin_37998647/article/details/79113855 )
 	 
+
+# 5.[反射](https://www.jianshu.com/p/381ec446a318?utm_campaign=hugo&utm_medium=reader_share&utm_content=note&utm_source=weixin-friends)
+    方法	                   作用
+    getDeclaredMethods()	获取所有的方法
+    getReturnType()	获得方法的返回类型
+    getParameterTypes()	获得方法的传入参数类型
+    getDeclaredMethod("",.class,……)	获得特定的方法
+    getDeclaredConstructors()	获取所有的构造方法
+    getDeclaredConstructor(.class,……)	获取特定的构造方法
+    getSuperclass()	获取某类的父类
+    getInterfaces()	获取某类实现的接口
+    
+    作者：LightningDC
+    链接：https://www.jianshu.com/p/381ec446a318
+    來源：简书
+    著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
