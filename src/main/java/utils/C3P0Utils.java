@@ -1,6 +1,8 @@
 package utils;
 
 import com.mchange.v2.c3p0.ComboPooledDataSource;
+import handler.HttpHeadHandler;
+import org.apache.log4j.Logger;
 
 import javax.sql.DataSource;
 import java.io.BufferedReader;
@@ -24,6 +26,7 @@ public class C3P0Utils {
     private static ComboPooledDataSource dataSource = new ComboPooledDataSource();
     private static ConcurrentHashMap<String, String> map = new ConcurrentHashMap<>();
     private static ConcurrentHashMap<String, String> mapSmall = new ConcurrentHashMap<>();
+    private static Logger logger = Logger.getLogger(HttpHeadHandler.class.getName());
 
     public static DataSource getDataSource() {
         return dataSource;
@@ -106,6 +109,7 @@ public class C3P0Utils {
      */
     public static Connection getConnection() {
         try {
+            logger.info("===================================jdbc success =================");
             return dataSource.getConnection();
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -124,7 +128,7 @@ public class C3P0Utils {
         int number = 0;
         preparedStatement = C3P0Utils.getConnection().prepareStatement(sql);
         for (int i = 0; i < args.length; i++) {
-            preparedStatement.setObject(i + 1, args[i]);
+            preparedStatement.setObject(i+1 , args[i]);
         }
         number = preparedStatement.executeUpdate();
         return number;

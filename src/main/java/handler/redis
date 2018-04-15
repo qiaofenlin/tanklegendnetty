@@ -1,0 +1,6 @@
+1.login中专门的session表:jedis.hset(JsonKeyword.SESSION, username, sessionid);
+
+2.regist中将把用户的基本信息传入到redis中.格式为 jedis.hmset(userLoginInfo.getUname(), userLoginInfoMap);
+    将整个对象的信息都存到redis中.
+
+

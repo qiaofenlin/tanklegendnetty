@@ -5,14 +5,11 @@ package dao;
  * @date 18-2-25 下午4:34
  */
 
-public class UserLoginInfo {
+public class UserLoginInfo extends User{
     private int uesr_game_info_id;
-    private String user_login_name;
-    private String user_login_password;
     private String user_login_tel;
     private String user_login_email;
     private String uesr_login_game_info;
-
 
     public int getUesr_game_info_id() {
         return uesr_game_info_id;
@@ -20,22 +17,6 @@ public class UserLoginInfo {
 
     public void setUesr_game_info_id(int uesr_game_info_id) {
         this.uesr_game_info_id = uesr_game_info_id;
-    }
-
-    public String getUser_login_name() {
-        return user_login_name;
-    }
-
-    public void setUser_login_name(String user_login_name) {
-        this.user_login_name = user_login_name;
-    }
-
-    public String getUser_login_password() {
-        return user_login_password;
-    }
-
-    public void setUser_login_password(String user_login_password) {
-        this.user_login_password = user_login_password;
     }
 
     public String getUser_login_tel() {

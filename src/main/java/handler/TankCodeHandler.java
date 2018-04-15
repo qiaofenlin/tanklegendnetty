@@ -15,6 +15,7 @@ import io.netty.channel.ChannelHandlerContext;
 import org.apache.log4j.Logger;
 import server.PSServer;
 import utils.C3P0Utils;
+import utils.FullHttpRequestUtils;
 import utils.JedisClient;
 
 import java.io.UnsupportedEncodingException;
@@ -30,9 +31,9 @@ public class TankCodeHandler extends ChannelHandlerAdapter {
     }
 
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws JSONException, UnsupportedEncodingException {
-        JSONObject body = (JSONObject) msg;
-        String type = body.getString(JsonKeyword.TYPE);
-        if (type.equalsIgnoreCase(JsonKeyword.TANKCODE)) {
+        String uri= FullHttpRequestUtils.getUri(msg);
+        if (uri.equals("TankCode")) {
+            JSONObject body=FullHttpRequestUtils.ContentToJson(msg);
             userTankCode.setUser_id(body.getInteger("user_id"));
             userTankCode.setCode(body.getString("code"));
 
@@ -62,7 +63,6 @@ public class TankCodeHandler extends ChannelHandlerAdapter {
         } else {
             ctx.fireChannelRead(msg);
         }
-
 
     }
 

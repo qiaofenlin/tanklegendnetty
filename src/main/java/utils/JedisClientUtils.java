@@ -1,5 +1,6 @@
 package utils;
 
+import com.alibaba.fastjson.JSONObject;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 
@@ -74,6 +75,10 @@ public class JedisClientUtils implements JedisClient {
         jedis.close();
         return result;
     }
+
+//    public boolean hListGet(JSONObject body) {
+//
+//    }
 
     @Override
     public Boolean exists(String key) {

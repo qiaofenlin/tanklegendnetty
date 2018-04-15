@@ -54,7 +54,6 @@ public class test {
         jedis.hmset(KEY, map);
         HGETALL();
     }
-
     /**
      * HGET key field
      * 返回哈希表 key 中给定域 field 的值。

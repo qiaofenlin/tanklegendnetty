@@ -1,8 +1,9 @@
-package handler;
+package history;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import utils.Reflection1;
+import service.LoginService;
+import service.RegisterService;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerAdapter;
 import io.netty.channel.ChannelHandlerContext;
@@ -36,11 +37,11 @@ public class HttpRequestHandler2 extends ChannelHandlerAdapter {
         System.out.println(content);
         logger.info("------------ Print content end  ------------");
         JSONObject jsonObject = JSON.parseObject(content);
-        String path ="handler."+UriClass;
+        String path ="service."+UriClass;
         System.out.println("path:" +path);
         logger.info("------------进入具体的Service------------");
         /*执行对象的函数.*/
-        Reflection1 r =new Reflection1();
+        Reflection.Reflection1 r =new Reflection.Reflection1();
         Object result=null;
         Object tmp=r.newInstance(path, getTankJedisPool());
         if(UriClass.equals("LoginService")){

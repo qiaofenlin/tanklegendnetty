@@ -9,6 +9,9 @@ public class JsonKeyword {
     public static final String PASSWORD = "password";
     public static final String USERID = "userId";
     public static final String SESSION = "session";
+    public static final String USER_LOGIN_TEL="user_login_tel";
+    public static final String USER_LOGIN_EMAIL="user_login_email";
+    public static final String USER_LOGIN_GAME_INFO="uesr_login_game_info";
 
     public static final String HP = "HP";
     public static final String FIRE = "fire";

@@ -1,9 +1,8 @@
-package handler;
+package service;
 
 import com.alibaba.fastjson.JSONException;
 import com.alibaba.fastjson.JSONObject;
 import dao.JsonKeyword;
-import dao.User;
 import io.netty.channel.ChannelHandlerContext;
 import org.apache.log4j.Logger;
 import redis.clients.jedis.Jedis;
@@ -12,8 +11,6 @@ import utils.TankJedisPool;
 
 import javax.servlet.http.Cookie;
 import java.io.UnsupportedEncodingException;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.concurrent.locks.ReentrantLock;
 
 /**

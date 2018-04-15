@@ -1,4 +1,4 @@
-package handler;
+package history;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
@@ -6,8 +6,9 @@ import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerAdapter;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.http.FullHttpRequest;
-import history.Reflection;
 import org.apache.log4j.Logger;
+import service.LoginService;
+import service.RegisterService;
 import utils.TankJedisPool;
 
 /**
@@ -41,7 +42,7 @@ public class HttpRequestHandler1 extends ChannelHandlerAdapter {
 //        System.out.println("==============content");
         JSONObject jsonObject = JSON.parseObject(content);
 
-        String path ="handler."+UriClass;
+        String path ="service."+UriClass;
         logger.info("------------进入LoginService------------");
 //        Class clazz = Class.forName(path);
 //        System.out.println("进入LoginService");
