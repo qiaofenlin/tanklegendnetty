@@ -1,4 +1,4 @@
-package history.chatroom;
+package server.chatroom;
 
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.*;

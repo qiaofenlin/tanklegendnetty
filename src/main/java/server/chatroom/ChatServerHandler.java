@@ -1,4 +1,4 @@
-package history.chatroom;
+package server.chatroom;
 
 import io.netty.channel.*;
 import io.netty.channel.group.ChannelGroup;
