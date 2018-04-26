@@ -8,6 +8,8 @@ package dao;
 public class UserTankCode {
     private int id;
     private int user_id;
+    private String username;
+    private String session;
     private String code;
 
     public int getId() {
@@ -34,6 +36,22 @@ public class UserTankCode {
         this.code = code;
     }
 
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getSession() {
+        return session;
+    }
+
+    public void setSession(String session) {
+        this.session = session;
+    }
+
     @Override
     public String toString() {
         return "UserTankCode{" +
@@ -43,23 +61,4 @@ public class UserTankCode {
                 '}';
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        UserTankCode that = (UserTankCode) o;
-
-        if (id != that.id) return false;
-        if (user_id != that.user_id) return false;
-        return code != null ? code.equals(that.code) : that.code == null;
-    }
-
-    @Override
-    public int hashCode() {
-        int result = id;
-        result = 31 * result + user_id;
-        result = 31 * result + (code != null ? code.hashCode() : 0);
-        return result;
-    }
 }

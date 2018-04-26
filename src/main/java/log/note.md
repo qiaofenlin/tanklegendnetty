@@ -69,3 +69,8 @@
     链接：https://www.jianshu.com/p/381ec446a318
     來源：简书
     著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
+    
+# 6.[jvm调优 工具介绍](https://www.jianshu.com/p/c6a04c88900a)
+
+# 7.[自定义解释器](https://www.2cto.com/kf/201207/138637.html)
+

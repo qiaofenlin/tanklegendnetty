@@ -3,10 +3,7 @@ package handler;
 
 import com.alibaba.fastjson.JSONException;
 import com.alibaba.fastjson.JSONObject;
-import dao.User;
 import dao.UserLoginInfo;
-import dao.UserPlayInfo;
-import exception.MessageException;
 import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandlerAdapter;
 import io.netty.channel.ChannelHandlerContext;
@@ -16,19 +13,15 @@ import org.apache.log4j.Logger;
 
 import dao.JsonKeyword;
 import redis.clients.jedis.Jedis;
-import redis.clients.jedis.exceptions.JedisConnectionException;
 import utils.C3P0Utils;
 import utils.FullHttpRequestUtils;
 import utils.GetRandom;
-import utils.TankJedisPool;
+import utils.redis.TankJedisPool;
 
-import javax.servlet.http.Cookie;
 import java.io.UnsupportedEncodingException;
-import java.net.HttpCookie;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.locks.ReentrantLock;
 
 
 public class LoginHandler extends ChannelHandlerAdapter {

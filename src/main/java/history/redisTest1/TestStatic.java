@@ -1,6 +1,10 @@
-package log;
+package history.redisTest1;
 
 //import log.aaa;
+
+import log.aaa;
+import log.bbb;
+
 /**
  * @Created by  qiao
  * @date 18-3-8 下午9:33
@@ -54,7 +58,7 @@ public class TestStatic {
             aaa a1 = (aaa) o2;
         }
         System.out.println(o2.toString());
-        String redispoll = "utils.bbb";
+        String redispoll = "log.aaa.bbb";
         Object o3 =r.newInstance(redispoll,arg);
         System.out.println(o3.toString());
 

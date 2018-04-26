@@ -7,7 +7,7 @@ import io.netty.channel.ChannelHandlerContext;
 import org.apache.log4j.Logger;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.exceptions.JedisConnectionException;
-import utils.TankJedisPool;
+import utils.redis.TankJedisPool;
 
 import javax.servlet.http.Cookie;
 import java.io.UnsupportedEncodingException;

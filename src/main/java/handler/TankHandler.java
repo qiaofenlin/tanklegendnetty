@@ -7,7 +7,6 @@ import dao.CommonRepertoryEqupment.CommonRepertoryEqupmentEngine;
 import dao.CommonRepertoryEqupment.CommonRepertoryEqupmentTurret;
 import dao.CommonRepertoryEqupment.CommonRepertoryEqupmentWhell;
 import dao.JsonKeyword;
-import dao.UserPlayInfo;
 import dao.UserTankInfo;
 import handler.service.TradeUserInfoService;
 import io.netty.channel.ChannelFutureListener;
@@ -16,27 +15,36 @@ import io.netty.channel.ChannelHandlerContext;
 import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.handlers.BeanHandler;
 import org.apache.log4j.Logger;
+import redis.clients.jedis.Jedis;
 import server.PSServer;
 import utils.C3P0Utils;
+import utils.FullHttpRequestUtils;
+import utils.redis.TankJedisPool;
 
 import java.io.UnsupportedEncodingException;
 import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 import java.util.concurrent.locks.ReentrantLock;
 
 public class TankHandler extends ChannelHandlerAdapter {
     private static Logger logger = Logger.getLogger(TankHandler.class.getName());
-    private UserTankInfo userTankInfo =new UserTankInfo();
+    private UserTankInfo userTankInfo = new UserTankInfo();
+    private TankJedisPool tankJedisPool;
     private ReentrantLock lock = new ReentrantLock();
-    public TankHandler() {
+
+    public TankHandler(TankJedisPool tankJedisPool) {
+        this.tankJedisPool = tankJedisPool;
     }
 
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws JSONException, UnsupportedEncodingException {
-        JSONObject body = (JSONObject) msg;
-        String type = body.getString(JsonKeyword.TYPE);
-        if (type.equalsIgnoreCase(JsonKeyword.TANKINFO)) {
-            userTankInfo.setUser_id(body.getInteger(JsonKeyword.USERID));
-            userTankInfo.setUser_tank_info_id(body.getInteger(JsonKeyword.USERTANKINFOID));
-            //将接收到的数据存起来.
+        String uri = FullHttpRequestUtils.getUri(msg);
+        if (uri.equals("Tank")) {
+            JSONObject body = FullHttpRequestUtils.ContentToJson(msg);
+            userTankInfo.setUsername(body.getString(JsonKeyword.USERNAME));
+            userTankInfo.setSession(body.getString(JsonKeyword.SESSION));
+            //将接收到的数据存到内存 并存到redis.
             recTankInfo(body);
             logger.info(userTankInfo.toString() + "访问后台返回值===>TankHandler:channelRead");
             ctx.writeAndFlush(userTankInfo.toString()).addListener(ChannelFutureListener.CLOSE);
@@ -48,7 +56,6 @@ public class TankHandler extends ChannelHandlerAdapter {
             tradeUserInfoService.put(userTankInfo.getUser_id());
             lock.unlock();
 
-//            System.out.println("/////////////////////userTankCode"+PSServer.userPlayInfo.toString());
         } else {
             ctx.fireChannelRead(msg);
         }
@@ -65,6 +72,9 @@ public class TankHandler extends ChannelHandlerAdapter {
         userTankInfo.setEqupment_turret_id(body.getInteger(JsonKeyword.EQUPMENTTURRETID));
         userTankInfo.setEqupment_whell_id(body.getInteger(JsonKeyword.EQUPMENTWHELLID));
         System.out.println("==========" + "getUserTank()");
+        /*存到redis*/
+        String addUserTankInfoToRedisStr = addUserTankInfoToRedis(userTankInfo);
+        /*存到mysql*/
         getUserTank();
         logger.info("---------------" + userTankInfo.toString());
         System.out.println("==========" + "getUserTank()");
@@ -116,19 +126,19 @@ public class TankHandler extends ChannelHandlerAdapter {
         return userTankInfo;
     }
 
-    /*写入数据库*/
-    public void addUserTankInfo(){
+    /*写入jdbc数据库*/
+    public void addUserTankInfo() {
         int rows = 0;
         try {
             QueryRunner qr = new QueryRunner(C3P0Utils.getDataSource());
             String sql = "insert into user_tank_info values(null,?,?,?,?,?,?,?,?,?,?)";
-            Object[] params = { userTankInfo.getUser_id(),userTankInfo.getUser_tank_info_id(),userTankInfo.getEqupment_turret_id(),
-                    userTankInfo.getEqupment_whell_id(),userTankInfo.getEupment_engin_id(),userTankInfo.getEqupment_armour_id(),userTankInfo.getHP(),
-                    userTankInfo.getFire(),userTankInfo.getShotsSpeed(),userTankInfo.getTankSpeed()};
+            Object[] params = {userTankInfo.getUser_id(), userTankInfo.getUser_tank_info_id(), userTankInfo.getEqupment_turret_id(),
+                    userTankInfo.getEqupment_whell_id(), userTankInfo.getEupment_engin_id(), userTankInfo.getEqupment_armour_id(), userTankInfo.getHP(),
+                    userTankInfo.getFire(), userTankInfo.getShotsSpeed(), userTankInfo.getTankSpeed()};
             rows = qr.update(sql, params);
         } catch (SQLException e) {
             e.printStackTrace();
-        }finally {
+        } finally {
             if (rows > 0) {
                 logger.info("user_tank_info添加成功");
             } else {
@@ -137,5 +147,37 @@ public class TankHandler extends ChannelHandlerAdapter {
             }
         }
     }
+
+    /*写入redis数据库*/
+    public String addUserTankInfoToRedis(UserTankInfo userTankInfo) {
+        Jedis jedis =tankJedisPool.getConnection();
+        Map<String, String> userTankInfoMap = new HashMap<>();
+        userTankInfoMap.put(JsonKeyword.USERTANKINFOID, String.valueOf(userTankInfo.getUser_tank_info_id()));
+        userTankInfoMap.put(JsonKeyword.EQUPMENTTURRETID, String.valueOf(userTankInfo.getEqupment_turret_id()));
+        userTankInfoMap.put(JsonKeyword.EQUPMENTARMOURID, String.valueOf(userTankInfo.getEqupment_armour_id()));
+        userTankInfoMap.put(JsonKeyword.EQUPMENTWHELLID, String.valueOf(userTankInfo.getEqupment_whell_id()));
+        userTankInfoMap.put(JsonKeyword.EQUPMENTENGINID, String.valueOf(userTankInfo.getEupment_engin_id()));
+
+        try {
+            jedis.hmset(userTankInfo.getUsername(), userTankInfoMap);
+
+            /*查看插入数据*/
+            Map<String, String> result = jedis.hgetAll(userTankInfo.getUsername());
+            Iterator<Map.Entry<String, String>> it = result.entrySet().iterator();
+            while (it.hasNext()) {
+                Map.Entry<String, String> entry = it.next();
+                System.out.println("key:" + entry.getKey() + " value:"
+                        + entry.getValue());
+            }
+            return "success";
+        } catch (Exception e) {
+            e.printStackTrace();
+        }finally {
+            return "flase";
+        }
+    }
+
+
+    /*返回时需要吧坦克的属性都返回回去,不过也可以写一个前端写一个js文件直接显示.*/
 
 }

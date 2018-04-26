@@ -4,7 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import dao.JsonKeyword;
 import org.apache.log4j.Logger;
 import redis.clients.jedis.Jedis;
-import utils.TankJedisPool;
+import utils.redis.TankJedisPool;
 
 import java.util.concurrent.locks.ReentrantLock;
 

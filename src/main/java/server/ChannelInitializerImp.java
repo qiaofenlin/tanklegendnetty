@@ -8,7 +8,7 @@ import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.handler.codec.http.HttpObjectAggregator;
 import io.netty.handler.codec.http.HttpRequestDecoder;
 import io.netty.handler.codec.http.HttpResponseEncoder;
-import utils.TankJedisPool;
+import utils.redis.TankJedisPool;
 
 
 public class ChannelInitializerImp extends ChannelInitializer<NioSocketChannel> {
@@ -28,10 +28,13 @@ public class ChannelInitializerImp extends ChannelInitializer<NioSocketChannel> 
         channel.pipeline().addLast(new HttpHeadHandler());//outbound
         channel.pipeline().addLast(new LoginHandler(tankJedisPool));//inbound outbound
         channel.pipeline().addLast(new RegisterHandler(tankJedisPool));
-//        channel.pipeline().addLast(new TankHandler());//inbound outbound
-//        channel.pipeline().addLast(new MapHandler());//inbound outbound
-        channel.pipeline().addLast(new TankCodeHandler());//inbound outbound
-//        channel.pipeline().addLast(new TradeUserInfoGetHandler());//inbound outbound
+
+        channel.pipeline().addLast(new TankHandler(tankJedisPool));//inbound outbound
+        channel.pipeline().addLast(new MapHandler(tankJedisPool));//inbound outbound
+        channel.pipeline().addLast(new TankCodeHandler(tankJedisPool));//inbound outbound
+
+        channel.pipeline().addLast(new TradeUserInfoGetHandler(tankJedisPool));//inbound outbound
+        channel.pipeline().addLast(new TradeUserInfoPutHandler(tankJedisPool));//inbound outbound
 
 
 //        channel.pipeline().addLast(new HttpContentHandler());//inbound  HttpRequestHandler1

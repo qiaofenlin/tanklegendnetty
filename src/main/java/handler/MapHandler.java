@@ -14,6 +14,8 @@ import org.apache.commons.dbutils.QueryRunner;
 import org.apache.log4j.Logger;
 import server.PSServer;
 import utils.C3P0Utils;
+import utils.FullHttpRequestUtils;
+import utils.redis.TankJedisPool;
 
 
 import java.io.UnsupportedEncodingException;
@@ -26,17 +28,19 @@ import static dao.JsonKeyword.*;
 public class MapHandler extends ChannelHandlerAdapter {
     private static Logger logger = Logger.getLogger(MapHandler.class.getName());
     private ReentrantLock lock = new ReentrantLock();
+    private TankJedisPool tankJedisPool;
     private UserMapInfo userMapInfo=new UserMapInfo();
     private MapLoad mapLoad =new MapLoad();
     private static List mapInfoArrayList=new ArrayList<>(MAXNUMBMAP);
 
-    public MapHandler() {
+    public MapHandler(TankJedisPool tankJedisPool) {
+        this.tankJedisPool=tankJedisPool;
     }
 
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws JSONException, UnsupportedEncodingException {
-        JSONObject body = (JSONObject) msg;
-        String type = body.getString(JsonKeyword.TYPE);
-        if (type.equalsIgnoreCase(JsonKeyword.MAPINFO)) {
+        String uri= FullHttpRequestUtils.getUri(msg);
+        if (uri.equals("Map")) {
+            JSONObject body=FullHttpRequestUtils.ContentToJson(msg);
             userMapInfo.setUser_id(body.getInteger(JsonKeyword.USERID));
             /*将传进来的msg中mapinfo转换成Array,将这个array转化成一个对象.*/
             JSONArray mapinfoid1 = body.getJSONArray(JsonKeyword.MAPINFOID);
@@ -56,8 +60,7 @@ public class MapHandler extends ChannelHandlerAdapter {
             TradeUserInfoService tradeUserInfoService = new TradeUserInfoService(JsonKeyword.MAPINFO);
             tradeUserInfoService.put(userMapInfo.getUser_id());
             lock.unlock();
-//            PSServer.executor.submit(new Thread(new TradeUserInfoRunnable(PSServer.countDownLatch,JsonKeyword.MAPINFO)));
-//            System.out.println("/////////////////////userTankCode"+PSServer.userPlayInfo.toString());
+
         } else {
             ctx.fireChannelRead(msg);
         }

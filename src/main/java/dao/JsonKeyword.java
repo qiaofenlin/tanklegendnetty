@@ -12,6 +12,7 @@ public class JsonKeyword {
     public static final String USER_LOGIN_TEL="user_login_tel";
     public static final String USER_LOGIN_EMAIL="user_login_email";
     public static final String USER_LOGIN_GAME_INFO="uesr_login_game_info";
+    public static final String ROOMID = "roomid";
 
     public static final String HP = "HP";
     public static final String FIRE = "fire";
@@ -33,7 +34,7 @@ public class JsonKeyword {
     public static final String TREADEUSERINFOGET="trade_userinfo_get";
     public static final String TREADEUSERINFOPUT="trade_userinfo_put";
     public static final String TREADEUSERINFOUSERLIST = "trade_userinfo_user_list";
-    public static final String USERCOUNT = "user_count";
+    public static final String  USERCOUNT = "user_count";
     public static final String USER = "user";
 
 

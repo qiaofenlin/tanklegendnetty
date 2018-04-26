@@ -12,8 +12,9 @@ import redis.clients.jedis.Jedis;
 import utils.C3P0Utils;
 import utils.FullHttpRequestUtils;
 
-import utils.TankJedisPool;
+import utils.redis.TankJedisPool;
 
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.concurrent.locks.ReentrantLock;
@@ -45,7 +46,7 @@ public class RegisterHandler extends ChannelHandlerAdapter {
             userLoginInfo.setUesr_login_game_info(body.getString(JsonKeyword.USER_LOGIN_GAME_INFO));
             userLoginInfo.setUser_login_tel(JsonKeyword.USER_LOGIN_TEL);
             userLoginInfo.setUser_login_email(JsonKeyword.USER_LOGIN_EMAIL);
-            String StatusFlag = jedisAdd(userLoginInfo);
+            String StatusFlag = AddUserLoginInfoToRedis(userLoginInfo);
 
             ctx.writeAndFlush("["+username+"]: 注册"+StatusFlag).addListener(ChannelFutureListener.CLOSE);
             logger.info("["+username+"]: 注册情况("+StatusFlag+")!!");
@@ -57,9 +58,9 @@ public class RegisterHandler extends ChannelHandlerAdapter {
 
     }
 
-    private String jedisAdd(UserLoginInfo userLoginInfo) {
+    private String AddUserLoginInfoToRedis(UserLoginInfo userLoginInfo) {
         Jedis jedis =tankJedisPool.getConnection();
-        Map<String, String> userLoginInfoMap = jedis.hgetAll(userLoginInfo.getUname());
+        Map<String, String> userLoginInfoMap = new HashMap<String, String>();
         userLoginInfoMap.put(JsonKeyword.USERNAME, userLoginInfo.getUname());
         userLoginInfoMap.put(JsonKeyword.PASSWORD, userLoginInfo.getUpassward());
         userLoginInfoMap.put(JsonKeyword.USER_LOGIN_GAME_INFO, userLoginInfo.getUesr_login_game_info());
@@ -68,6 +69,8 @@ public class RegisterHandler extends ChannelHandlerAdapter {
 
         try {
             jedis.hmset(userLoginInfo.getUname(), userLoginInfoMap);
+
+            /*查看插入数据*/
             Map<String, String> result = jedis.hgetAll(userLoginInfo.getUname());
             Iterator<Map.Entry<String, String>> it = result.entrySet().iterator();
             while (it.hasNext()) {

@@ -2,7 +2,7 @@ package history;
 
 import com.alibaba.fastjson.JSONObject;
 import io.netty.channel.ChannelHandlerContext;
-import utils.TankJedisPool;
+import utils.redis.TankJedisPool;
 
 import java.lang.reflect.Array;
 import java.lang.reflect.Constructor;
@@ -141,7 +141,7 @@ public class Reflection {
         Class newoneClass = Class.forName(className);
 
 //        Class[] argsClass = new Class[args.length];
-        Class redisPool = Class.forName("utils.TankJedisPool");
+        Class redisPool = Class.forName("utils.redis.TankJedisPool");
 
 //        for (int i = 0, j = args.length; i < j; i++) {
 //            argsClass[i] = args[i].getClass();

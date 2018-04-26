@@ -1,4 +1,4 @@
-package utils;
+package utils.redis;
 
 import org.apache.log4j.Logger;
 import redis.clients.jedis.Jedis;

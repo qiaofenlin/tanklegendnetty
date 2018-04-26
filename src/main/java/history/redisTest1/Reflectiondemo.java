@@ -1,4 +1,4 @@
-package log;
+package history.redisTest1;
 
 import java.lang.reflect.Array;
 import java.lang.reflect.Constructor;

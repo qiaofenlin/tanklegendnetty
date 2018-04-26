@@ -1,4 +1,4 @@
-package utils;
+package utils.redis;
 
 import java.util.*;
 

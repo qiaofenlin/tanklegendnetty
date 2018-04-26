@@ -9,7 +9,7 @@ import io.netty.channel.ChannelHandlerAdapter;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.http.FullHttpRequest;
 import org.apache.log4j.Logger;
-import utils.TankJedisPool;
+import utils.redis.TankJedisPool;
 
 /**
  * @Created by  qiao

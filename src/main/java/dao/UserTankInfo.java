@@ -1,8 +1,10 @@
 package dao;
 
 
-public class UserTankInfo {
+public class  UserTankInfo {
     private int user_id;
+    private String username;
+    private String session;
     private int user_tank_info_id;
     private int equpment_turret_id;
     private int equpment_whell_id;
@@ -93,10 +95,27 @@ public class UserTankInfo {
         this.tankSpeed = tankSpeed;
     }
 
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getSession() {
+        return session;
+    }
+
+    public void setSession(String session) {
+        this.session = session;
+    }
+
     @Override
     public String toString() {
         return "UserTankInfo{" +
                 "user_id=" + user_id +
+                "username=" + username +
                 ", user_tank_info_id=" + user_tank_info_id +
                 ", equpment_turret_id=" + equpment_turret_id +
                 ", equpment_whell_id=" + equpment_whell_id +
@@ -109,37 +128,4 @@ public class UserTankInfo {
                 '}';
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        UserTankInfo that = (UserTankInfo) o;
-
-        if (user_id != that.user_id) return false;
-        if (user_tank_info_id != that.user_tank_info_id) return false;
-        if (equpment_turret_id != that.equpment_turret_id) return false;
-        if (equpment_whell_id != that.equpment_whell_id) return false;
-        if (eupment_engin_id != that.eupment_engin_id) return false;
-        if (equpment_armour_id != that.equpment_armour_id) return false;
-        if (HP != that.HP) return false;
-        if (fire != that.fire) return false;
-        if (shotsSpeed != that.shotsSpeed) return false;
-        return tankSpeed == that.tankSpeed;
-    }
-
-    @Override
-    public int hashCode() {
-        int result = user_id;
-        result = 31 * result + user_tank_info_id;
-        result = 31 * result + equpment_turret_id;
-        result = 31 * result + equpment_whell_id;
-        result = 31 * result + eupment_engin_id;
-        result = 31 * result + equpment_armour_id;
-        result = 31 * result + HP;
-        result = 31 * result + fire;
-        result = 31 * result + shotsSpeed;
-        result = 31 * result + tankSpeed;
-        return result;
-    }
 }

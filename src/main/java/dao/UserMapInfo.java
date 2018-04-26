@@ -14,6 +14,8 @@ import java.util.List;
 public class UserMapInfo  extends CommonMap{
 
     private int user_id;
+    private String username;
+    private String session;
     private List mapLoads =new ArrayList(26);
 
 
@@ -36,6 +38,22 @@ public class UserMapInfo  extends CommonMap{
         this.mapLoads = mapLoads;
     }
 
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getSession() {
+        return session;
+    }
+
+    public void setSession(String session) {
+        this.session = session;
+    }
+
     @Override
     public String toString() {
         return "UserMapInfo{" +
@@ -44,21 +62,4 @@ public class UserMapInfo  extends CommonMap{
                 '}';
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        UserMapInfo that = (UserMapInfo) o;
-
-        if (user_id != that.user_id) return false;
-        return mapLoads != null ? mapLoads.equals(that.mapLoads) : that.mapLoads == null;
-    }
-
-    @Override
-    public int hashCode() {
-        int result = user_id;
-        result = 31 * result + (mapLoads != null ? mapLoads.hashCode() : 0);
-        return result;
-    }
 }

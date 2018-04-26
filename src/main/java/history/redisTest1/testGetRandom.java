@@ -1,4 +1,4 @@
-package log;
+package history.redisTest1;
 
 import utils.GetRandom;
 

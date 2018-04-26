@@ -1,4 +1,4 @@
-package log;
+package history.redisTest1;
 
 import redis.clients.jedis.Jedis;
 
