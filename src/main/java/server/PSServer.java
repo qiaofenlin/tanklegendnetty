@@ -59,6 +59,7 @@ public class PSServer {
                     .channel(NioServerSocketChannel.class)
                     .option(ChannelOption.SO_BACKLOG, 128)
                     .childOption(ChannelOption.TCP_NODELAY, true)
+
                     .childHandler(new ChannelInitializerImp(tankJedisPool));
 
             ChannelFuture future = server.bind(host,port).sync();

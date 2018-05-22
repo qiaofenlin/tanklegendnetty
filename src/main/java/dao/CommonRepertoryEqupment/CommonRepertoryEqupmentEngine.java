@@ -8,6 +8,42 @@ package dao.CommonRepertoryEqupment;
 public class CommonRepertoryEqupmentEngine extends CommonRepertoryEqupment {
     private int equpment_engine_id;
     private String equpment_engine_name;
+    public double uPDefend;//防护
+    public double uPMaxSpeed;//最大速度
+    public double uPTurnSpeed;//旋转速度
+    public double uPPower;//动力
+
+    public double getuPDefend() {
+        return uPDefend;
+    }
+
+    public void setuPDefend(double uPDefend) {
+        this.uPDefend = uPDefend;
+    }
+
+    public double getuPMaxSpeed() {
+        return uPMaxSpeed;
+    }
+
+    public void setuPMaxSpeed(double uPMaxSpeed) {
+        this.uPMaxSpeed = uPMaxSpeed;
+    }
+
+    public double getuPTurnSpeed() {
+        return uPTurnSpeed;
+    }
+
+    public void setuPTurnSpeed(double uPTurnSpeed) {
+        this.uPTurnSpeed = uPTurnSpeed;
+    }
+
+    public double getuPPower() {
+        return uPPower;
+    }
+
+    public void setuPPower(double uPPower) {
+        this.uPPower = uPPower;
+    }
 
     public int getEqupment_engine_id() {
         return equpment_engine_id;

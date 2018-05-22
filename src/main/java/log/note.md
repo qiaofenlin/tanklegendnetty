@@ -74,3 +74,20 @@
 
 # 7.[自定义解释器](https://www.2cto.com/kf/201207/138637.html)
 
+# 8.[Jython的使用](https://blog.csdn.net/dreamjava9213/article/details/51628341)
+
+# 9.[python中对象与dict的转化](https://blog.csdn.net/leilba/article/details/50654256)
+    
+## 10.[python序列化与反序列](https://www.cnblogs.com/madq-py/p/5595897.html)
+
+匹配池的作用：
+    匹配池中用户的状态
+建立线程池   
+
+未完成部分：
+扫描器
+    扫描地图中 tank能够扫描到的数据，并整理成python需要的数据，然后进行返回处理。
+
+匹配池：
+    有一个线程池进行用户玩家的匹配，需要匹配时，调用该线程池进行匹配。
+

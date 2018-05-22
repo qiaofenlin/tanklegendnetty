@@ -34,7 +34,7 @@ public class LoginHandler extends ChannelHandlerAdapter {
     public LoginHandler(TankJedisPool tankJedisPool) {this.tankJedisPool=tankJedisPool;
     }
 
-    public void  channelRead(ChannelHandlerContext ctx, Object msg) throws JSONException, UnsupportedEncodingException {
+    public void  channelRead(ChannelHandlerContext ctx, Object msg) {
         String uri=FullHttpRequestUtils.getUri(msg);
         if (uri.equals("Login")) {
             JSONObject body=FullHttpRequestUtils.ContentToJson(msg);
@@ -44,11 +44,11 @@ public class LoginHandler extends ChannelHandlerAdapter {
             String sessionid = body.getString(JsonKeyword.SESSION);
 
             System.out.println(body.toJSONString());
-            System.out.println("=========================");
-            System.out.println(FullHttpRequestUtils.ContentToMap(msg));
+            System.out.println("=========================11111");
+            JSONObject jsonObject=FullHttpRequestUtils.ContentToMap(msg);
+
             /*判断用户名和密码是否正确*/
             /*判断user用户的session是否正确 如果不正确 则给一个新的session.如果正确就直接登陆.*/
-
             /*给每一个登录的用户赋予一个session*/
             if(canLogin(username,passwd)){/*canLogin(username,passwd)*/
                 sessionid = GetRandom.getUserId();
@@ -73,14 +73,12 @@ public class LoginHandler extends ChannelHandlerAdapter {
         userInfo.put(JsonKeyword.SESSION, sessionid);
         boolean status =false;
 
-
         jedis.hset(JsonKeyword.SESSION, username, sessionid);
-        logger.info(jedis.hget(JsonKeyword.SESSION, username));
+        logger.warn("================"+username +"的Session为："+sessionid+"================");
+        logger.info(jedis.hget(JsonKeyword.SESSION, username));/*等价于命令行中 hget session qiao*/
         tankJedisPool.putbackConnection(jedis);
         logger.info(username + "保存UserSession成功.===>saveUserInfo");
-
     }
-
 
     private boolean canLogin(String username, String passwd){
 

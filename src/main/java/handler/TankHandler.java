@@ -21,6 +21,8 @@ import utils.C3P0Utils;
 import utils.FullHttpRequestUtils;
 import utils.redis.TankJedisPool;
 
+
+
 import java.io.UnsupportedEncodingException;
 import java.sql.SQLException;
 import java.util.HashMap;
@@ -49,13 +51,10 @@ public class TankHandler extends ChannelHandlerAdapter {
             logger.info(userTankInfo.toString() + "访问后台返回值===>TankHandler:channelRead");
             ctx.writeAndFlush(userTankInfo.toString()).addListener(ChannelFutureListener.CLOSE);
             addUserTankInfo();
-            lock.lock();
             PSServer.userPlayInfo.setUser_id(userTankInfo.getUser_id());
             PSServer.userPlayInfo.setUserTankInfo(userTankInfo);
             TradeUserInfoService tradeUserInfoService = new TradeUserInfoService(JsonKeyword.TANKCODE);
             tradeUserInfoService.put(userTankInfo.getUser_id());
-            lock.unlock();
-
         } else {
             ctx.fireChannelRead(msg);
         }
@@ -68,8 +67,8 @@ public class TankHandler extends ChannelHandlerAdapter {
         System.out.println("===================123");
 
         userTankInfo.setEqupment_armour_id(body.getInteger(JsonKeyword.EQUPMENTARMOURID));
-        userTankInfo.setEupment_engin_id(body.getInteger(JsonKeyword.EQUPMENTENGINID));
-        userTankInfo.setEqupment_turret_id(body.getInteger(JsonKeyword.EQUPMENTTURRETID));
+        userTankInfo.setEupment_engin_id(body.getString(JsonKeyword.EQUPMENTENGINID));
+        userTankInfo.setEqupment_turret_id(body.getString(JsonKeyword.EQUPMENTTURRETID));
         userTankInfo.setEqupment_whell_id(body.getInteger(JsonKeyword.EQUPMENTWHELLID));
         System.out.println("==========" + "getUserTank()");
         /*存到redis*/

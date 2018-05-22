@@ -5,7 +5,7 @@ package dao;
  * @date 18-3-8 下午6:32
  */
 
-public class UserTankCode {
+public class UserTankCode implements UserInfo{
     private int id;
     private int user_id;
     private String username;
@@ -33,7 +33,7 @@ public class UserTankCode {
     }
 
     public void setCode(String code) {
-        this.code = code;
+        this.code = code+"\r\n";
     }
 
     public String getUsername() {
@@ -61,4 +61,8 @@ public class UserTankCode {
                 '}';
     }
 
+    @Override
+    public String getClassName() {
+        return "userTankCode";
+    }
 }

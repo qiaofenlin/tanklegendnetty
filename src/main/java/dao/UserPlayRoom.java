@@ -11,7 +11,7 @@ import java.util.List;
  * @date 18-4-18 下午2:57
  */
 
-public class UserPlayRoom {
+public class UserPlayRoom implements UserInfo{
     private static Logger logger = Logger.getLogger(UserPlayRoom.class.getName());
 
     private GameModel type;
@@ -59,5 +59,10 @@ public class UserPlayRoom {
     public void setRoomid(int roomid) {
         this.setType(roomid);
         this.roomid = roomid;
+    }
+
+    @Override
+    public String getClassName() {
+        return "userPlayRoom";
     }
 }

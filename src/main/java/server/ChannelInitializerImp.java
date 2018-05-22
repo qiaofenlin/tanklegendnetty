@@ -26,21 +26,26 @@ public class ChannelInitializerImp extends ChannelInitializer<NioSocketChannel> 
         channel.pipeline().addLast(new HttpObjectAggregator(65536));//inbound
         channel.pipeline().addLast(new HttpResponseEncoder());//outbound
         channel.pipeline().addLast(new HttpHeadHandler());//outbound
+
         channel.pipeline().addLast(new LoginHandler(tankJedisPool));//inbound outbound
         channel.pipeline().addLast(new RegisterHandler(tankJedisPool));
-
         channel.pipeline().addLast(new TankHandler(tankJedisPool));//inbound outbound
         channel.pipeline().addLast(new MapHandler(tankJedisPool));//inbound outbound
         channel.pipeline().addLast(new TankCodeHandler(tankJedisPool));//inbound outbound
+        channel.pipeline().addLast(new TankCodeServerRequestHandler(tankJedisPool));//inbound outbound
 
         channel.pipeline().addLast(new TradeUserInfoGetHandler(tankJedisPool));//inbound outbound
         channel.pipeline().addLast(new TradeUserInfoPutHandler(tankJedisPool));//inbound outbound
+        channel.pipeline().addLast(new MatchHandler(tankJedisPool));
+
+        channel.pipeline().addLast(new FirstInHandler());//inbound outbound
+        channel.pipeline().addLast(new GetGarageHandler(tankJedisPool));//inbound outbound
+//        channel.pipeline().addLast(new OutPutHandler());//inbound outbound
 
 
 //        channel.pipeline().addLast(new HttpContentHandler());//inbound  HttpRequestHandler1
 //        channel.pipeline().addLast(new HttpRequestHandler2(tankJedisPool));
 //        channel.pipeline().addLast(new HttpRequestHandler1(tankJedisPool));
-
 
     }
 }

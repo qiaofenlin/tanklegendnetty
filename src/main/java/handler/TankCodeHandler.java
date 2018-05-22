@@ -1,22 +1,19 @@
 package handler;
-
-
-
 import com.alibaba.fastjson.JSONException;
 import com.alibaba.fastjson.JSONObject;
+import config.Configurator;
 import dao.JsonKeyword;
 import dao.UserPlayInfo;
 import dao.UserTankCode;
-import handler.service.TradeUserInfoService;
 import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandlerAdapter;
 import io.netty.channel.ChannelHandlerContext;
 import org.apache.log4j.Logger;
-import server.PSServer;
 import utils.C3P0Utils;
 import utils.FullHttpRequestUtils;
 import utils.redis.TankJedisPool;
-import java.io.UnsupportedEncodingException;
+
+import java.io.*;
 import java.util.concurrent.locks.ReentrantLock;
 
 public class TankCodeHandler extends ChannelHandlerAdapter {
@@ -31,35 +28,53 @@ public class TankCodeHandler extends ChannelHandlerAdapter {
     }
 
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws JSONException, UnsupportedEncodingException {
-        String uri= FullHttpRequestUtils.getUri(msg);
+        String uri = FullHttpRequestUtils.getUri(msg);
         if (uri.equals("TankCode")) {
+            logger.info("==============tankcode come on");
             JSONObject body=FullHttpRequestUtils.ContentToJson(msg);
-            userTankCode.setUser_id(body.getInteger("user_id"));
-            userTankCode.setCode(body.getString("code"));
+            userTankCode.setUsername(body.getString(JsonKeyword.USERNAME));
+            userTankCode.setSession(body.getString(JsonKeyword.SESSION));
+            userTankCode.setCode(body.getString(JsonKeyword.TANKCODE));
 
+            if (FullHttpRequestUtils.Sessionhandler(userTankCode.getUsername(),userTankCode.getSession(), tankJedisPool)) {
+                try {
+                    String code = body.getString(JsonKeyword.TANKCODE);
+                    String codepath = Configurator.getPythonCodeToPath() + userTankCode.getUsername()+".py";
+                    FileOutputStream pythoncode = new FileOutputStream(codepath);
+                    byte[] codeBytes = code.getBytes();
+                    InputStream is = new ByteArrayInputStream(codeBytes);
+                    byte[] bbuf = new byte[32];
+                    int hasRead = 0;
+                    while ((hasRead = is.read(bbuf)) > 0) {
+                        pythoncode.write(bbuf, 0, hasRead);
+                    }
+                    pythoncode.flush();
+                    pythoncode.close();
+                    is.close();
+                    System.out.println(body.get("code"));
+                    ctx.writeAndFlush("[" + userTankCode.getUsername() + "]:upload success. 所在路径为：" + codepath).addListener(ChannelFutureListener.CLOSE);
 
-            System.out.println("-----------------");
-            logger.info(userTankCode.toString() + "访问后台返回值===>TankCodeHandler:channelRead");
-            System.out.println("-----------------");
-            ctx.writeAndFlush(userTankCode.toString()).addListener(ChannelFutureListener.CLOSE);
+                } catch (IOException e) {
+                    ctx.writeAndFlush("error").addListener(ChannelFutureListener.CLOSE);
+                    e.printStackTrace();
+                }
 
+            } else {
+                ctx.writeAndFlush("session error.").addListener(ChannelFutureListener.CLOSE);
+            }
             String sql = "insert into user_tank_code_info values(null,?,?) ";
-            addMapInfo(sql,userTankCode.getUser_id(),userTankCode.getCode());
-            lock.lock();
-            PSServer.userPlayInfo.setUser_id(userTankCode.getUser_id());
-            PSServer.userPlayInfo.setUserTankCode(userTankCode);
-            TradeUserInfoService tradeUserInfoService = new TradeUserInfoService(JsonKeyword.TANKCODE);
-            tradeUserInfoService.put(userTankCode.getUser_id());
-            lock.unlock();
+//            addMapInfo(sql,userTankCode.getUser_id(),userTankCode.getCode());
+//            PSServer.userPlayInfo.setUser_id(userTankCode.getUser_id());
+//            PSServer.userPlayInfo.setUserTankCode(userTankCode);
+//            TradeUserInfoService tradeUserInfoService = new TradeUserInfoService(JsonKeyword.TANKCODE);
+//            tradeUserInfoService.put(userTankCode.getUser_id());
 //            System.out.println("/////////////////////userTankCode"+PSServer.userPlayInfo.toString());
-           /*查询缓存*/
+//            /*查询缓存*/
 //            try {
 //                jedisClient.hset("CONTENT_LIST",)
 //            } catch (Exception e) {
 //                e.printStackTrace();
 //            }
-
-
         } else {
             ctx.fireChannelRead(msg);
         }
@@ -89,6 +104,32 @@ public class TankCodeHandler extends ChannelHandlerAdapter {
             }
         }
         return a;
+    }
+
+    private static void insert(String fileName, int position, String insertContent) throws IOException {
+        File tmp = File.createTempFile("tmp1111", null);
+        /*将临时文件在结束时删除*/
+        tmp.deleteOnExit();
+
+        RandomAccessFile raf = new RandomAccessFile(fileName, "rw");
+        FileOutputStream tmpOut = new FileOutputStream(tmp);
+        FileInputStream tmpIn = new FileInputStream(tmp);
+        raf.seek(position);
+        byte[] bbuf = new byte[64];
+        int hasRead = 0;
+        /*写入临时文件*/
+        while ((hasRead = raf.read(bbuf)) > 0) {
+            tmpOut.write(bbuf, 0, hasRead);
+        }
+        raf.seek(position);
+        /*写到指定文件*/
+        raf.write(insertContent.getBytes());
+        while ((hasRead = tmpIn.read(bbuf)) > 0) {
+            raf.write(bbuf, 0, hasRead);
+        }
+        tmpIn.close();
+        tmpOut.close();
+        raf.close();
     }
 
     /*解析tankCodeHandler中的数据,是其装华为可以执行的代码.*/
@@ -151,5 +192,34 @@ public class TankCodeHandler extends ChannelHandlerAdapter {
      *
      *      数据给双方传(同步).
      */
-
 }
+
+//{
+//        "type":"tankcode",
+//        "username":"qiao12223",
+//        "session":"68958b0607af47e994d22748aaf74f65",
+//        "tankcode": "from apiTankcode.sendServerTankCode import Direction
+//class qiao12223:
+//        def myCodeHP1(self,mytank):
+//        print(mytank)
+//        if mytank.getHP() > 30:
+//        if mytank.getEnvironment().getIsExistTank() == False:
+//        mytank.setDirection(Direction.up)
+//        return mytank.getDirection()
+//        elif mytank.getEnvironment().getIsExistTank() == True:
+//        if (mytank.getDistance() < 10):
+//        mytank.setDirection(Direction.down)
+//        return mytank.getDirection()
+//        else:
+//        mytank.setDirection('aaa')
+//        return mytank.getDirection()
+//        else:
+//        mytank.setDirection(Direction.up)
+//        return mytank.getDirection()
+//        elif mytank.getHP() < 100:
+//        print('<100')
+//        return mytank.getDirection()
+//        else:
+//        print('>=30')
+//        return mytank.getDirection()"
+//        }

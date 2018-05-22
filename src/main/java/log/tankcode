@@ -31,3 +31,31 @@ if () {}
         2)转化为参数-->传到自己坦克中.
 
 
+/*根据type=init 解析tankcode 生成若干代码块 为一个字符数组 存着多条命令*/
+            String[] codes = new String[2];
+            codes[0] = "IF HAVETANK {tank.PH}>60  tank.location=(x,x)" +
+                        "DO " +
+                        "mytank.move (y,y) " +
+                        "mytank.shot" +
+                        "END";
+            /*根据type=start 解析前端扫描到的数据 生成参数 */
+            String statusFromView = "" +
+                    "{" +
+                    "   mytankId:1" +
+                    "   mytankLocation:(2,2)" +
+                    "   otherTank:null" +
+                    "   otherTankLocation:null" +
+                    "}";
+//            String codeToOpt = codes[0].replace(xxxx);
+
+
+            /*将参数拼接到tank中 之后调用相应的解析器 生成。 */
+            String responseTankStatus ="{" +
+                    "   mytankId:1" +
+                    "   mytankLocation:(2,2)" +
+                    "   otherTank:null" +
+                    "   otherTankLocation:null" +
+                    "}";
+            String codeToOpt =null;
+//            InterpreterUtil2 interpreterUtil2 = new InterpreterUtil2();
+//            interpreterUtil2.opt(codeToOpt);

@@ -5,11 +5,34 @@ package dao;
  * @date 18-3-8 下午9:24
  */
 
-public class UserPlayInfo {
+public class UserPlayInfo implements UserInfo{
     private int user_id;
     private UserTankInfo userTankInfo;
     private UserTankCode userTankCode;
     private UserMapInfo userMapInfo;
+    private int rank;
+    private int startMatchTime;
+
+    public UserPlayInfo(int user_id, int rank) {
+        this.user_id = user_id;
+        this.rank = rank;
+    }
+
+    public int getStartMatchTime() {
+        return startMatchTime;
+    }
+
+    public void setStartMatchTime(int startMatchTime) {
+        this.startMatchTime = startMatchTime;
+    }
+
+    public int getRank() {
+        return rank;
+    }
+
+    public void setRank(int rank) {
+        this.rank = rank;
+    }
 
     public UserPlayInfo(Integer user_id) {
         this.user_id=user_id;
@@ -78,5 +101,10 @@ public class UserPlayInfo {
         result = 31 * result + (userTankCode != null ? userTankCode.hashCode() : 0);
         result = 31 * result + (userMapInfo != null ? userMapInfo.hashCode() : 0);
         return result;
+    }
+
+    @Override
+    public String getClassName() {
+        return "userPlayInfo";
     }
 }

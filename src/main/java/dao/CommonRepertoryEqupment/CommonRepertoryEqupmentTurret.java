@@ -10,6 +10,42 @@ import javafx.geometry.HPos;
 public class CommonRepertoryEqupmentTurret extends CommonRepertoryEqupment {
     private int equpment_turret_id;
     private String equpment_turret_name;
+    public double turretDamage;//炮塔伤害
+    public double turretReload;//重新装载弹药时间
+    public double turretAttackRange;//打击范围
+    public double turretBurnTime;//燃烧时间
+
+    public double getTurretDamage() {
+        return turretDamage;
+    }
+
+    public void setTurretDamage(double turretDamage) {
+        this.turretDamage = turretDamage;
+    }
+
+    public double getTurretReload() {
+        return turretReload;
+    }
+
+    public void setTurretReload(double turretReload) {
+        this.turretReload = turretReload;
+    }
+
+    public double getTurretAttackRange() {
+        return turretAttackRange;
+    }
+
+    public void setTurretAttackRange(double turretAttackRange) {
+        this.turretAttackRange = turretAttackRange;
+    }
+
+    public double getTurretBurnTime() {
+        return turretBurnTime;
+    }
+
+    public void setTurretBurnTime(double turretBurnTime) {
+        this.turretBurnTime = turretBurnTime;
+    }
 
     public int getEqupment_turret_id() {
         return equpment_turret_id;

@@ -24,7 +24,7 @@ public class testToJava {
         try {
             String path = "/home/qiao/IdeaProjects/tanklegendnetty/src/main/java/history/toJavacode";
             String str = "Tankcode12.java";
-            insert("Tankcode12.java", 1, content);
+            insert("Tankcode1234.java", 1, content);
             System.out.println("插入成功");
         } catch (IOException e) {
             System.out.println("代码插入失败");
@@ -73,6 +73,5 @@ public class testToJava {
         tmpIn.close();
         tmpOut.close();
         raf.close();
-
     }
 }

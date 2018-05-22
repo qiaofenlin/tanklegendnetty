@@ -11,15 +11,24 @@ import java.util.List;
  * @date 18-3-3 下午7:52
  */
 
-public class UserMapInfo  extends CommonMap{
+public class UserMapInfo extends CommonMap implements UserInfo {
+
 
     private int user_id;
     private String username;
     private String session;
-    private List mapLoads =new ArrayList(26);
-
+    private List mapLoads = new ArrayList(26);
+    private String room_id;
 
     public UserMapInfo() {
+    }
+
+    public String getRoom_id() {
+        return room_id;
+    }
+
+    public void setRoom_id(String room_id) {
+        this.room_id = room_id;
     }
 
     public int getUser_id() {
@@ -58,8 +67,15 @@ public class UserMapInfo  extends CommonMap{
     public String toString() {
         return "UserMapInfo{" +
                 "user_id=" + user_id +
+                ", username='" + username + '\'' +
+                ", session='" + session + '\'' +
                 ", mapLoads=" + mapLoads +
+                ", room_id='" + room_id + '\'' +
                 '}';
     }
 
+    @Override
+    public String getClassName() {
+        return "userMapInfo";
+    }
 }

@@ -27,9 +27,9 @@ public class JsonKeyword {
     public static final String EQUPMENTENGINID = "equpmentEnginId";
 
     public static final String MAPINFO="mapinfo";
-    public static final int MAXNUMBMAP=26;
+    public static final int MAXNUMBMAP=50;
     public static final String MAPINFOID="mapinfoid";/*json数据中传出的map的统一集合.*/
-
+    public static final String MAPINFOKEY = "mapInfoArrayListKey";
     public static final String TANKCODE="tankcode";
     public static final String TREADEUSERINFOGET="trade_userinfo_get";
     public static final String TREADEUSERINFOPUT="trade_userinfo_put";
